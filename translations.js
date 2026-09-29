@@ -184,6 +184,8 @@ window.I18N = {
 
 
     // ── Project cards ─────────────────────────────────────────
+    "card.astrologio.desc": "Personalized soundscapes from natal charts, blending AI, astronomy and astrology.",
+    "card.astrologio.type": "Immersive",
     "card.astrazeneca.desc": "Immersive 360° tunnel with LED wall and narrative.",
     "card.astrazeneca.type": "Immersive",
     "card.casafoa.desc": "Immersive 360 auditorium for mogetta.studio — 2024 gold medal winner.",
@@ -489,6 +491,8 @@ window.I18N = {
 
 
     // ── Project cards ─────────────────────────────────────────
+    "card.astrologio.desc": "Paisajes sonoros personalizados a partir de cartas natales, con IA, astronomía y astrología.",
+    "card.astrologio.type": "Inmersivo",
     "card.astrazeneca.desc": "Túnel 360 con pantalla LED y narrativa inmersiva.",
     "card.astrazeneca.type": "Inmersivo",
     "card.casafoa.desc": "Auditorio 360 inmersivo para mogetta.studio, reconocido con medalla de oro 2024.",
