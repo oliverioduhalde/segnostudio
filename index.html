@@ -1487,6 +1487,14 @@
       transition: opacity 0.2s;
     }
     .sonido-client-card:hover img { opacity: 1; }
+    /* text wordmark for clients without a hosted logo file */
+    .sonido-client-card .client-wordmark {
+      height: 44px; display: flex; align-items: center;
+      font-family: inherit; font-size: 17px; font-weight: 600;
+      letter-spacing: 0.02em; text-transform: none;
+      color: #fff; opacity: 0.65; transition: opacity 0.2s;
+    }
+    .sonido-client-card:hover .client-wordmark { opacity: 1; }
     .sonido-client-card span {
       font-family: var(--mono);
       font-size: 9px;
@@ -1798,7 +1806,7 @@
   <main class="page-shell">
     <section class="hero" id="top">
       <div class="brand-shell" id="brandShell">
-        <img class="segno-avatar" src="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg" alt="Segno" loading="eager" decoding="async">
+        <img class="segno-avatar" src="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg" alt="Segno" loading="eager" decoding="async">
         <div class="brand" id="brand">
           <span class="bl" data-letter="S">S</span><span class="bl" data-letter="E">E</span><span class="bl" data-letter="G">G</span><span class="bl" data-letter="N">N</span><span class="bl" data-letter="O">O</span>
           <span class="bl" data-letter="S">S</span><span class="bl" data-letter="T">T</span><span class="bl" data-letter="D">D</span><span class="bl" data-letter="I">I</span><span class="bl bl-cx" data-letter="O">O</span>
@@ -2150,13 +2158,13 @@
           <a href="#workshops/astrologio" class="ws-card">
             <span class="ws-card-still"><img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_477fd380ddee4d63992200e9ec3d8580~mv2.jpg/v1/fill/w_400,h_225,al_c,q_80/file.jpg"></span>
             <h3>Astro.log.io</h3>
-            <p data-i18n="wsh.cards.astro.desc">Content in development.</p>
+            <p data-i18n="wsh.cards.astro.desc">Personalized soundscapes from natal charts, blending AI, astronomy and astrology.</p>
             <span class="ws-card-tag" data-i18n="wsh.card.tag.workshop">Workshop</span>
           </a>
           <a href="#workshops/ciclomusic" class="ws-card">
             <span class="ws-card-still ws-card-still--dev"><span class="ws-dev-glyph" data-i18n="wsh.card.inprogress">In progress</span></span>
             <h3>Ciclomusic</h3>
-            <p data-i18n="wsh.cards.astro.desc">Content in development.</p>
+            <p data-i18n="wsh.cards.ciclo.desc">Content in development.</p>
             <span class="ws-card-tag" data-i18n="wsh.card.tag.workshop">Workshop</span>
           </a>
         </div>
@@ -2196,18 +2204,18 @@
 
         <p class="ws-section-title" data-i18n="wsh.sec.musicbots">Musicbots — gallery</p>
         <div class="ws-photo-grid">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_ff99ebbedbd84e259e02d6dc43740bcd~mv2_d_4851_3253_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_52c6bd0c68eb4f57b43f5d3510752683~mv2_d_4288_3198_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_1613a6705f9c4b22b600404a22ddb695~mv2_d_4019_2996_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_030dadd31ade40a4ba5f5d164accb02b~mv2_d_4968_3191_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_55b70d9500cc4c48a516207fe9e31a64~mv2_d_5250_3143_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_d162cc42a07f48f08260a342ac96f80e~mv2_d_3599_4525_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_2844fd7c981f4b65bca5eb8f2cd48984~mv2_d_4321_2572_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_3dba75832dab40598c98e7a37d03c018~mv2_d_4445_2642_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_cf01d40f528644feaec0723a0e6128b0~mv2_d_3368_2997_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_09333fbf400e4131884563cb16420e7a~mv2_d_5082_3390_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_469532a4bc73482082d053cddc6ca494~mv2_d_4633_2939_s_4_2.jpg">
-          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_d3d03245a010428ab385168c3fd5bdd2~mv2.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_ff99ebbedbd84e259e02d6dc43740bcd~mv2_d_4851_3253_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_52c6bd0c68eb4f57b43f5d3510752683~mv2_d_4288_3198_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_1613a6705f9c4b22b600404a22ddb695~mv2_d_4019_2996_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_030dadd31ade40a4ba5f5d164accb02b~mv2_d_4968_3191_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_55b70d9500cc4c48a516207fe9e31a64~mv2_d_5250_3143_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_d162cc42a07f48f08260a342ac96f80e~mv2_d_3599_4525_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_2844fd7c981f4b65bca5eb8f2cd48984~mv2_d_4321_2572_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_3dba75832dab40598c98e7a37d03c018~mv2_d_4445_2642_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_cf01d40f528644feaec0723a0e6128b0~mv2_d_3368_2997_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_09333fbf400e4131884563cb16420e7a~mv2_d_5082_3390_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_469532a4bc73482082d053cddc6ca494~mv2_d_4633_2939_s_4_2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Banda de Robots" src="https://static.wixstatic.com/media/fdedb3_d3d03245a010428ab385168c3fd5bdd2~mv2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
         </div>
 
         <p class="ws-section-title" data-i18n="wsh.sec.program">Program</p>
@@ -2326,39 +2334,39 @@
 
         <p class="ws-section-title" data-i18n="wsh.sec.gallery">Gallery</p>
         <div class="ws-photo-grid">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_be4cd484f88c4ca69e62aaf5a0183486f000.jpg">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_be4cd484f88c4ca69e62aaf5a0183486f000.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
           <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_85d1e3f948d048c4b818ea7a505cf70b~mv2.gif">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_fe3fdeb1ccdd4c7e8384fe1e54dec17c~mv2.png">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_477fd380ddee4d63992200e9ec3d8580~mv2.jpg">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_1a2ce48d4c4448de8a7620aaa8213c46~mv2.jpg">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_9c128929ad0e40159ff798e3849f1695~mv2.jpg">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_ccfbf2dff5bd42559271ef168729b663~mv2.jpg">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_2d57f3bd995a46878413a83638b318a3~mv2.png">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_b62bb381a00449fca561cfc925c129e0~mv2.png">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_3318526b615248fba83d636c6914755b~mv2.png">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_e6d9d6a52c3b4f3886657ec3d54fe9f4~mv2.jpg">
-          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_36ada8996dec4610a5de4851b87285b0~mv2.jpg">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_fe3fdeb1ccdd4c7e8384fe1e54dec17c~mv2.png/v1/fit/w_2000,h_2000,q_85/file.png">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_477fd380ddee4d63992200e9ec3d8580~mv2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_1a2ce48d4c4448de8a7620aaa8213c46~mv2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_9c128929ad0e40159ff798e3849f1695~mv2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_ccfbf2dff5bd42559271ef168729b663~mv2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_2d57f3bd995a46878413a83638b318a3~mv2.png/v1/fit/w_2000,h_2000,q_85/file.png">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_b62bb381a00449fca561cfc925c129e0~mv2.png/v1/fit/w_2000,h_2000,q_85/file.png">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_3318526b615248fba83d636c6914755b~mv2.png/v1/fit/w_2000,h_2000,q_85/file.png">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_e6d9d6a52c3b4f3886657ec3d54fe9f4~mv2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
+          <img loading="lazy" alt="Astro.log.io" src="https://static.wixstatic.com/media/fdedb3_36ada8996dec4610a5de4851b87285b0~mv2.jpg/v1/fit/w_2000,h_2000,q_85/file.jpg">
         </div>
 
         <p class="ws-section-title" data-i18n="wsh.sec.team">Team</p>
         <div class="ws-team-grid">
-          <div class="ws-team-card"><strong>Alejandra Eusebi</strong><span>Astrología</span></div>
-          <div class="ws-team-card"><strong>Martín Bonadeo</strong><span>Arte · Ciencia</span></div>
-          <div class="ws-team-card"><strong>Oliverio Duhalde</strong><span>Música · Tecnología artística</span></div>
-          <div class="ws-team-card"><strong>Fernando Bravo</strong><span>Psicología · Cognición</span></div>
-          <div class="ws-team-card"><strong>Patricio González Vivo</strong><span>Programación · Gráficos</span></div>
-          <div class="ws-team-card"><strong>Cristian Castro Arenas</strong><span>Arquitectura · Espacios</span></div>
-          <div class="ws-team-card"><strong>Graterolina Fuenmayor</strong><span>Astronomía</span></div>
+          <div class="ws-team-card"><strong>Alejandra Eusebi</strong><span data-i18n="wsh.astrologio.role.astrology">Astrology</span></div>
+          <div class="ws-team-card"><strong>Martín Bonadeo</strong><span data-i18n="wsh.astrologio.role.artsci">Art · Science</span></div>
+          <div class="ws-team-card"><strong>Oliverio Duhalde</strong><span data-i18n="wsh.astrologio.role.musictech">Music · Art technology</span></div>
+          <div class="ws-team-card"><strong>Fernando Bravo</strong><span data-i18n="wsh.astrologio.role.psych">Psychology · Cognition</span></div>
+          <div class="ws-team-card"><strong>Patricio González Vivo</strong><span data-i18n="wsh.astrologio.role.prog">Programming · Graphics</span></div>
+          <div class="ws-team-card"><strong>Cristian Castro Arenas</strong><span data-i18n="wsh.astrologio.role.arch">Architecture · Spaces</span></div>
+          <div class="ws-team-card"><strong>Graterolina Fuenmayor</strong><span data-i18n="wsh.astrologio.role.astronomy">Astronomy</span></div>
         </div>
 
-        <p class="ws-section-title">Disciplinas</p>
-        <p class="ws-desc">Artistas, astrólogos, psicólogos, astrónomos, programadores y arquitectos trabajando en conjunto sobre saberes ancestrales potenciados por tecnología contemporánea.</p>
+        <p class="ws-section-title" data-i18n="wsh.astrologio.disc.title">Disciplines</p>
+        <p class="ws-desc" data-i18n="wsh.astrologio.disc.desc">Artists, astrologers, psychologists, astronomers, programmers and architects working together on ancestral knowledge amplified by contemporary technology.</p>
       </div>
 
       <!-- CICLOMUSIC -->
       <div class="sonido-view" id="sv-workshops-ciclomusic" hidden>
         <div class="sonido-view-header"><p class="sonido-kicker" data-i18n="wsh.ciclomusic.kicker">Workshop</p><h2 class="sonido-view-title" data-i18n="wsh.ciclomusic.title">Ciclomusic</h2></div>
-        <p class="ws-desc">Información en desarrollo. Próximamente se publicará contenido sobre este laboratorio.</p>
+        <p class="ws-desc" data-i18n="wsh.ciclomusic.desc">Content in development. Details about this lab will be published soon.</p>
       </div>
 
     </main>
@@ -2919,7 +2927,7 @@
               <span>Adidas</span>
             </div>
             <div class="sonido-client-card">
-              <img src="https://logo.clearbit.com/trapiche.com.ar" alt="Trapiche" loading="lazy">
+              <span class="client-wordmark">Trapiche</span>
               <span>Trapiche</span>
             </div>
           </div>
@@ -3227,6 +3235,12 @@
         setMeta('meta[name="twitter:title"]',       tr('meta.og.title'));
         setMeta('meta[name="twitter:description"]', tr('meta.og.desc'));
         setMeta('meta[property="og:locale"]', lang === 'es' ? 'es_AR' : 'en_US');
+        setMeta('meta[property="og:locale:alternate"]', lang === 'es' ? 'en_US' : 'es_AR');
+        // canonical + og:url must point to the URL of the language shown,
+        // otherwise Google treats /es as a duplicate of / and drops it.
+        const pageUrl = 'https://segnostudio.com' + (lang === 'es' ? '/es' : '/');
+        document.querySelector('link[rel="canonical"]')?.setAttribute('href', pageUrl);
+        setMeta('meta[property="og:url"]', pageUrl);
 
         // dynamic templated labels (rebuilt on demand)
         const sl = document.getElementById('sceneLabel');
@@ -4277,7 +4291,7 @@
       })();
 
       syncUi();
-      applyLang(currentLang); // hydrate UI text in the selected language
+      setLangAndUpdateUrl(currentLang); // hydrate UI text + keep URL in sync with the language shown
       resize();
       requestAnimationFrame(draw);
       requestAnimationFrame(fitBrand); // asegura ancho correcto tras primer layout
