@@ -45,7 +45,7 @@
       width: 100%;
       min-height: 100%;
       margin: 0;
-      background: #030507;
+      background: var(--page-bg, #030507); /* sigue a la paleta activa (ver syncUi/tweenPalette) */
       color: var(--text);
       font-family: var(--font);
       overflow-x: hidden;
@@ -63,7 +63,7 @@
       height: 100%;
       display: block;
       cursor: crosshair;
-      background: #030507;
+      background: var(--page-bg, #030507);
       opacity: 0.2;
       z-index: 0;
     }
@@ -280,7 +280,7 @@
     .service-links.on-light a {
       border-color: rgba(20, 25, 30, 0.22);
       background: rgba(20, 25, 30, 0.06);
-      color: rgba(20, 25, 30, 0.62);
+      color: rgba(20, 25, 30, 0.84);
       text-shadow: none;
     }
     .service-links.on-light a:hover,
@@ -629,7 +629,7 @@
       border: 1px solid rgba(118, 243, 255, 0.42);
       border-radius: 999px;
       background: rgba(3, 5, 8, 0.72);
-      color: var(--hot);
+      color: rgba(255,255,255,0.92);
       font-family: var(--mono);
       font-size: 9px;
       letter-spacing: 0.14em;
@@ -1777,6 +1777,83 @@
       color: rgba(220,226,232,0.28);
       font-weight: 400;
     }
+
+    /* Leyendas sobre fotos: píldora oscura propia, legible sea cual sea la foto y el tema */
+    .studio-caption { background: rgba(10,14,18,0.66); color: rgba(255,255,255,0.92); padding: 3px 8px; border-radius: 4px; }
+
+    /* ============================================================
+       TEMA CLARO — activo cuando la paleta tiene fondo claro
+       (body[data-bg="light"], lo fija syncUi/tweenPalette).
+       Criterio de legibilidad: todo texto >= 4.5:1 contra su fondo real
+       (>= 3:1 si es texto grande). La tinta es casi negra y los acentos
+       (--hot) los genera la paleta ya con >= 4.5:1. Las superficies son
+       blancas translúcidas para que el contraste solo pueda subir.
+       ============================================================ */
+    body[data-bg="light"] {
+      color-scheme: light;
+      --ink:   rgba(12,16,20,0.94);
+      --ink-2: rgba(16,22,28,0.84);
+      --ink-3: rgba(16,22,28,0.74);
+      --surface:       rgba(255,255,255,0.55);
+      --surface-hover: rgba(255,255,255,0.78);
+      --line: rgba(16,22,28,0.18);
+      --text: var(--ink);
+      --muted: var(--ink-3);
+      --soft: rgba(16,22,28,0.07);
+      --panel: rgba(255,255,255,0.72);
+      --panel-line: var(--line);
+    }
+    /* barra superior de las secciones */
+    body[data-bg="light"] .sonido-topbar { background: rgba(255,255,255,0.72); border-bottom-color: var(--line); }
+    body[data-bg="light"] .sonido-back-btn { border-color: rgba(16,22,28,0.30); color: var(--ink-3); }
+    body[data-bg="light"] .sonido-back-btn:hover { border-color: rgba(16,22,28,0.6); }
+    body[data-bg="light"] .sonido-brand { color: var(--ink); }
+    body[data-bg="light"] .sonido-nav-link { color: var(--ink-3); }
+    body[data-bg="light"] .sonido-nav-link:hover { color: var(--ink); background: var(--surface-hover); }
+    body[data-bg="light"] .sonido-nav-link.is-active { color: var(--hot); background: var(--surface-hover); }
+    /* selector de idioma */
+    body[data-bg="light"] .lang-btn { color: var(--ink-3); }
+    body[data-bg="light"] .lang-btn:hover { color: var(--ink); }
+    body[data-bg="light"] .lang-btn[aria-pressed="true"] { color: var(--ink); }
+    body[data-bg="light"] .lang-btn + .lang-btn::before { color: rgba(16,22,28,0.38); }
+    /* títulos chicos de color: usan el acento de la paleta (>= 4.5:1) */
+    body[data-bg="light"] .sonido-kicker,
+    body[data-bg="light"] .ws-section-title,
+    body[data-bg="light"] .rider-cat { color: var(--hot); }
+    body[data-bg="light"] .ws-tag { color: var(--hot); border-color: var(--line); }
+    body[data-bg="light"] .ws-card-tag { color: var(--hot); }
+    /* texto corrido y citas */
+    body[data-bg="light"] .ws-quote { color: var(--ink-2); border-left-color: var(--hot); }
+    body[data-bg="light"] .ws-award-item { color: var(--ink-2); border-bottom-color: var(--line); }
+    body[data-bg="light"] .ws-partner { color: var(--ink-2); background: var(--surface); }
+    body[data-bg="light"] .rider-list li { color: var(--ink-2); }
+    body[data-bg="light"] .ws-team-card strong { color: var(--ink); }
+    body[data-bg="light"] .ws-card-still--dev .ws-dev-glyph { color: var(--ink-3); }
+    /* tarjetas y bloques: superficie blanca translúcida con borde visible */
+    body[data-bg="light"] .ws-card,
+    body[data-bg="light"] .ws-team-card,
+    body[data-bg="light"] .rider-block,
+    body[data-bg="light"] .sonido-client-card,
+    body[data-bg="light"] .sonido-contact-item { background: var(--surface); border-color: var(--line); }
+    body[data-bg="light"] .ws-card:hover,
+    body[data-bg="light"] .sonido-client-card:hover { background: var(--surface-hover); border-color: var(--hot); }
+    /* logos de clientes: en negro (el filtro base los pasa a blanco) */
+    body[data-bg="light"] .sonido-client-card img { filter: brightness(0); opacity: 0.72; }
+    body[data-bg="light"] .sonido-client-card:hover img { opacity: 1; }
+    body[data-bg="light"] .sonido-client-card span { color: var(--ink-3); }
+    body[data-bg="light"] .sonido-client-card .client-wordmark { color: var(--ink); opacity: 0.85; }
+    /* estadísticas, etiquetas de plataforma y contacto */
+    body[data-bg="light"] .sonido-stat { background: var(--surface); border-color: var(--line); }
+    body[data-bg="light"] .sonido-stat span,
+    body[data-bg="light"] .sonido-platform-tag { color: var(--ink-3); border-color: var(--line); }
+    body[data-bg="light"] .sonido-contact-item { color: var(--ink-2); }
+    body[data-bg="light"] .sonido-contact-item a { color: var(--ink); }
+    body[data-bg="light"] .sonido-contact-item a:hover { color: var(--hot); }
+    /* bloques de servicios y franja de contacto */
+    body[data-bg="light"] .service-block { background: var(--surface); border-color: var(--line); box-shadow: 0 18px 50px rgba(16,22,28,0.10); }
+    body[data-bg="light"] .contact-strip a { color: var(--ink); background: var(--surface); border-color: var(--line); }
+    body[data-bg="light"] .contact-strip a:hover { color: var(--hot); background: var(--surface-hover); border-color: var(--hot); }
+    body[data-bg="light"] .project-card span { color: var(--ink-3); }
   </style>
 </head>
 <body>
@@ -3311,23 +3388,75 @@
         toastTimer = window.setTimeout(() => toast.classList.remove("show"), 1200);
       };
 
+      // ── Criterio de la paleta aleatoria (legibilidad garantizada) ─────────
+      // Una paleta solo sale al aire si cumple TODOS estos límites:
+      //  · Fondo (bg): SIEMPRE claro. HSL saturación 0.18–0.50, luminosidad 0.86–0.94
+      //    y luminancia relativa WCAG >= 0.62 (nunca oscuro, nunca blanco puro).
+      //  · Tinta (fg, ondas y texto): contraste >= 9:1 contra el fondo (WCAG AAA).
+      //  · Acento (accent, ondas/brillos): contraste >= 3:1 (elemento gráfico).
+      //  · hot (links, nav activo, texto de color): contraste >= 4.5:1 (WCAG AA).
+      //  · Letras de marca: contraste >= 3:1 (texto grande), se fuerza en brandColorsN.
+      // El matiz (hue) es libre: la variedad viene del matiz, no de romper el contraste.
+      const PALETTE_LIMITS = {
+        bgS: [0.18, 0.50], bgL: [0.86, 0.94], bgMinY: 0.62,
+        fgMin: 9, accentMin: 3, hotMin: 4.5, brandMin: 3,
+      };
+      const _lin = (v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+      const relLum = (c) => 0.2126 * _lin(c[0]) + 0.7152 * _lin(c[1]) + 0.0722 * _lin(c[2]);
+      const contrastRatio = (a, b) => {
+        const la = relLum(a), lb = relLum(b);
+        return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+      };
+      // Oscurece (baja la luminosidad HSL) hasta alcanzar el contraste mínimo.
+      const fitContrast = (hueDeg, sat, lit, bg, min) => {
+        const h = (((hueDeg % 360) + 360) % 360) / 360;
+        let l = lit, c = hsl2rgb(h, sat, l);
+        while (contrastRatio(c, bg) < min && l > 0.03) { l -= 0.01; c = hsl2rgb(h, sat, l); }
+        return c;
+      };
+      const toHex = (c) => "#" + c.map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("");
+      const rand = (lo, hi) => lo + Math.random() * (hi - lo);
+      const rgbCss = (c) => `rgb(${Math.round(c[0] * 255)},${Math.round(c[1] * 255)},${Math.round(c[2] * 255)})`;
+      const hexToRgb01 = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+      // Oscurece un color (multiplicándolo) hasta cumplir el contraste mínimo contra el fondo.
+      const darkenTo = (c, bg, min) => {
+        let o = c, n = 0;
+        while (contrastRatio(o, bg) < min && n++ < 60) o = [o[0] * 0.96, o[1] * 0.96, o[2] * 0.96];
+        return o;
+      };
+
       const randomPalette = () => {
+        const L = PALETTE_LIMITS;
         const base = Math.random() * 360;
-        const light = Math.random() < 0.24;
-        const hsl = (h, s, l) => {
-          h = (((h % 360) + 360) % 360) / 360;
-          const a = s * Math.min(l, 1 - l);
-          const f = (n) => {
-            const k = (n + h * 12) % 12;
-            return l - a * Math.max(-1, Math.min(k - 3, Math.min(9 - k, 1)));
-          };
-          return [f(0), f(8), f(4)];
-        };
+        let bg;
+        do { bg = hsl2rgb(base / 360, rand(L.bgS[0], L.bgS[1]), rand(L.bgL[0], L.bgL[1])); }
+        while (relLum(bg) < L.bgMinY);
         const fgHue = base + 178 + (Math.random() - 0.5) * 36;
         const accHue = base + 34 + (Math.random() - 0.5) * 62;
-        return light
-          ? { bg: hsl(base, 0.16, 0.92), fg: hsl(fgHue, 0.55, 0.18), accent: hsl(accHue, 0.85, 0.45), hot: "#3b6fa8" }
-          : { bg: hsl(base, 0.55, 0.04), fg: hsl(fgHue, 0.66, 0.70), accent: hsl(accHue, 0.95, 0.64), hot: "#76f3ff" };
+        const fg = fitContrast(fgHue, rand(0.45, 0.60), rand(0.10, 0.20), bg, L.fgMin);
+        const accent = fitContrast(accHue, rand(0.70, 0.90), rand(0.42, 0.50), bg, L.accentMin);
+        // margen sobre el mínimo: al pasar a hex de 8 bits el contraste baja unas centésimas
+        const hot = toHex(fitContrast(accHue, rand(0.60, 0.80), 0.42, bg, L.hotMin + 0.2));
+        return { bg, fg, accent, hot };
+      };
+
+      // Informe de una paleta contra los límites (para probar el random en consola).
+      const paletteReport = (p) => {
+        const L = PALETTE_LIMITS;
+        const hotRgb = [1, 3, 5].map((i) => parseInt(p.hot.slice(i, i + 2), 16) / 255);
+        const r = {
+          bgY: relLum(p.bg),
+          fg: contrastRatio(p.fg, p.bg),
+          accent: contrastRatio(p.accent, p.bg),
+          hot: contrastRatio(hotRgb, p.bg),
+        };
+        r.ok = r.bgY >= L.bgMinY && r.fg >= L.fgMin && r.accent >= L.accentMin && r.hot >= L.hotMin;
+        return r;
+      };
+      // API de consola: __segnoPalette.generate() / .report(p) / .apply(p) / .limits
+      window.__segnoPalette = {
+        generate: randomPalette, report: paletteReport, limits: PALETTE_LIMITS,
+        apply: (p) => { state.palette = "random"; tweenPalette(p, 16); },
       };
 
       const paletteForState = () => {
@@ -3483,7 +3612,9 @@
         // MOST with the background (brightest on dark, darkest on light) so
         // IO always pops above the rest.
         const ioHue = (h1 + dh + 1) % 1;
-        const [ir, ig, ib] = hsl2rgb(ioHue, 0.66, lightBg ? 0.26 : 0.82);
+        const [ir, ig, ib] = lightBg
+          ? fitContrast(ioHue * 360, 0.66, 0.26, pal.bg, PALETTE_LIMITS.brandMin + 1)
+          : hsl2rgb(ioHue, 0.66, 0.82);
         const ioColor = `rgb(${(ir*255)|0},${(ig*255)|0},${(ib*255)|0})`;
         // seed includes n so different-length runs (landing 10 vs back 11)
         // each get their own stable shuffle within the same cycle
@@ -3505,7 +3636,10 @@
           const f    = m > 1 ? slot / (m - 1) : 0; // 0..1 across the band
           const hue  = (h1 + dh * f + 1) % 1;      // distinct hue per letter
           const lit  = litLo + f * litSpan;        // distinct lightness too
-          const [r, g, b] = hsl2rgb(hue, 0.58, lit);
+          // sobre fondo claro se oscurece lo necesario para no bajar del contraste mínimo
+          const [r, g, b] = lightBg
+            ? fitContrast(hue * 360, 0.58, lit, pal.bg, PALETTE_LIMITS.brandMin + 0.4)
+            : hsl2rgb(hue, 0.58, lit);
           return `rgb(${(r*255)|0},${(g*255)|0},${(b*255)|0})`;
         });
       };
@@ -3575,6 +3709,12 @@
           const curBg = state.randomPalette.bg;
           const curLum = curBg[0]*0.299 + curBg[1]*0.587 + curBg[2]*0.114;
           document.body.dataset.bg = curLum > 0.55 ? "light" : "dark";
+          document.documentElement.style.setProperty("--page-bg", rgbCss(curBg));
+          if (curLum > 0.55) {
+            // --hot también se interpola; nunca baja de 4.5:1 contra el fondo del momento
+            const mixHot = _lerpRgb01(hexToRgb01(oldPal.hot || "#3b6fa8"), hexToRgb01(newPal.hot || "#3b6fa8"), t);
+            document.documentElement.style.setProperty("--hot", toHex(darkenTo(mixHot, curBg, PALETTE_LIMITS.hotMin + 0.2)));
+          }
 
           cells.forEach((cell, i) => {
             const [or,og,ob] = oldCellRgb[i], [nr,ng,nb] = newCellRgb[i];
@@ -3636,6 +3776,7 @@
 
         const pal = paletteForState();
         document.documentElement.style.setProperty("--hot", pal.hot || "#76f3ff");
+        document.documentElement.style.setProperty("--page-bg", rgbCss(pal.bg));
         const lum = pal.bg[0] * 0.299 + pal.bg[1] * 0.587 + pal.bg[2] * 0.114;
         brand.style.mixBlendMode = lum > 0.55 ? "multiply" : "screen";
         // Flag light backgrounds so card/section text can flip to dark ink and
