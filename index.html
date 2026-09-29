@@ -4130,6 +4130,7 @@
         vrControls.setAttribute("aria-hidden", "true");
         badge360Modal.setAttribute("aria-hidden", "true");
         videoInfo.setAttribute("aria-hidden", "true");
+        setPlayParam(null);
         filmCards.forEach(muteFilm);
         activeFilmCard = null;
         activeModalFrame = null;
@@ -4177,6 +4178,7 @@
         filmCards.forEach(muteFilm);
         card.classList.add("is-audible");
         activeFilmCard = card;
+        setPlayParam(id);
 
         // hide end card before loading new video
         hideEndCard();
@@ -4346,20 +4348,39 @@
 
       videoClose.addEventListener("click", closeVideo);
 
-      // Enlace directo a la reproducción: ?play=<id de Vimeo> abre ese video en el lightbox
+      // === Enlaces directos ===
+      // Cada video tiene link propio: ?play=<id de Vimeo>. Al abrir un video la URL se actualiza (se puede copiar de la barra)
+      // y al cerrarlo se limpia. La sección sale del propio card, así que el link funciona con o sin #hash.
+      const cardHash = (card) => {
+        const view = card.closest(".sonido-view");
+        const m = view && view.id.match(/^sv-(.+)$/);
+        if (!m) return "";
+        const name = m[1];
+        const sec = ["experiencias", "instalaciones", "apps", "workshops"].find(k => name === k + "-home" || name.startsWith(k + "-"));
+        if (sec) { const v = name.slice(sec.length + 1); return "#" + sec + (v && v !== "home" ? "/" + v : ""); }
+        return name === "home" ? "#sonido" : "#sonido/" + name;
+      };
+      window.__segnoVideoLink = (card) => location.origin + location.pathname + "?play=" + card.dataset.vimeoId + cardHash(card);
+      const setPlayParam = (id) => {
+        try {
+          const u = new URL(location.href);
+          if (id) u.searchParams.set("play", id); else u.searchParams.delete("play");
+          history.replaceState(null, "", u.pathname + u.search + u.hash);
+        } catch {}
+      };
       const deepPlayId = new URLSearchParams(location.search).get("play");
       if (deepPlayId) {
-        const tryOpen = (n = 0) => {
-          const c = document.querySelector('.film-card[data-vimeo-id="' + CSS.escape(deepPlayId) + '"]');
-          if (c && c.offsetParent !== null) openVideo(c);
-          else if (n < 20) setTimeout(() => tryOpen(n + 1), 300);
-        };
-        setTimeout(tryOpen, 600);
+        const all = [...document.querySelectorAll('.film-card[data-vimeo-id="' + CSS.escape(deepPlayId) + '"]')];
+        if (all.length) {
+          const target = all.find(c => cardHash(c) === location.hash) || all[0];
+          if (cardHash(target) && location.hash !== cardHash(target)) location.hash = cardHash(target);
+          const tryOpen = (n = 0) => {
+            if (target.offsetParent !== null) openVideo(target);
+            else if (n < 20) setTimeout(() => tryOpen(n + 1), 300);
+          };
+          setTimeout(tryOpen, 600);
+        }
       }
-
-      videoLightbox.addEventListener("click", (event) => {
-        if (event.target === videoLightbox) closeVideo();
-      });
 
       videoFullscreen.addEventListener("click", () => {
         const target = videoFrameHost;
