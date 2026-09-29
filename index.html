@@ -1935,10 +1935,10 @@
         </div>
         <div class="project-list project-list--2col">
           <article class="project-row">
-            <div class="project-card"><h3>Astro.log.io</h3><p data-i18n="card.astrologio.desc">Personalized soundscapes from natal charts, blending AI, astronomy and astrology.</p><span data-i18n="card.astrologio.type">Immersive</span></div>
+            <div class="project-card"><h3 data-i18n="card.astrologio.title">Astro.log.io — Colombia, Bogotá</h3><p data-i18n="card.astrologio.desc">Immersive experience in the ESTUDIO INTERMEDIAL room — TX-104. Universidad de los Andes · Faculty of Arts and Humanities · Block TX. Bogotá, Colombia.</p><span data-i18n="card.astrologio.type">Immersive</span></div>
             <div class="film-card" data-vimeo-id="1231399074" data-vimeo-hash="2fab730644">
               <img src="https://i.vimeocdn.com/video/2206556863-cabe0b0cb4d55b124def3a40f95fca68c6268d744b910cd70bd50b5da2a68f10-d_960x540?r=crop" alt="Astro.log.io" loading="lazy">
-              <div class="film-meta"><strong>Astro.log.io</strong><span data-i18n="card.astrologio.type">Immersive</span></div>
+              <div class="film-meta"><strong>Astro.log.io</strong><span>Bogotá</span></div>
             </div>
           </article>
           <article class="project-row">
@@ -4345,6 +4345,17 @@
       });
 
       videoClose.addEventListener("click", closeVideo);
+
+      // Enlace directo a la reproducción: ?play=<id de Vimeo> abre ese video en el lightbox
+      const deepPlayId = new URLSearchParams(location.search).get("play");
+      if (deepPlayId) {
+        const tryOpen = (n = 0) => {
+          const c = document.querySelector('.film-card[data-vimeo-id="' + CSS.escape(deepPlayId) + '"]');
+          if (c && c.offsetParent !== null) openVideo(c);
+          else if (n < 20) setTimeout(() => tryOpen(n + 1), 300);
+        };
+        setTimeout(tryOpen, 600);
+      }
 
       videoLightbox.addEventListener("click", (event) => {
         if (event.target === videoLightbox) closeVideo();

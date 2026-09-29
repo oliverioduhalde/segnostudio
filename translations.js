@@ -184,7 +184,8 @@ window.I18N = {
 
 
     // ── Project cards ─────────────────────────────────────────
-    "card.astrologio.desc": "Personalized soundscapes from natal charts, blending AI, astronomy and astrology.",
+    "card.astrologio.title": "Astro.log.io — Colombia, Bogotá",
+    "card.astrologio.desc": "Immersive experience in the ESTUDIO INTERMEDIAL room — TX-104. Universidad de los Andes · Faculty of Arts and Humanities · Block TX. Bogotá, Colombia.",
     "card.astrologio.type": "Immersive",
     "card.astrazeneca.desc": "Immersive 360° tunnel with LED wall and narrative.",
     "card.astrazeneca.type": "Immersive",
@@ -491,7 +492,8 @@ window.I18N = {
 
 
     // ── Project cards ─────────────────────────────────────────
-    "card.astrologio.desc": "Paisajes sonoros personalizados a partir de cartas natales, con IA, astronomía y astrología.",
+    "card.astrologio.title": "Astro.log.io — Colombia, Bogotá",
+    "card.astrologio.desc": "Experiencia inmersiva en la sala ESTUDIO INTERMEDIAL — TX-104. Universidad de los Andes · Facultad de Artes y Humanidades · Bloque TX. Bogotá, Colombia.",
     "card.astrologio.type": "Inmersivo",
     "card.astrazeneca.desc": "Túnel 360 con pantalla LED y narrativa inmersiva.",
     "card.astrazeneca.type": "Inmersivo",
