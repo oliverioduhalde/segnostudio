@@ -3598,56 +3598,61 @@
           return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
         };
       };
-      // brand letters — hues picked at RANDOM (not an ordered arc) within the
-      // palette's fg→accent hue band, so letters stay in-family but never form
-      // a rainbow gradient. The last two letters (IO = input/output) share ONE
-      // identical, higher-luminance colour so they pop above the rest.
+      // brand letters — every letter gets its OWN colour (never repeated) within
+      // the palette's fg→accent hue band. Hue and lightness are assigned from two
+      // independent seeded shuffles, so the sequence is random (never a rainbow /
+      // gradient). The last two letters (IO = input/output) take the two
+      // highest-contrast lightness slots so they pop, but each keeps its own hue.
       const brandColorsN = (pal, n) => {
         const [h1]  = rgb2hsl(pal.fg[0],     pal.fg[1],     pal.fg[2]);
         const [h2]  = rgb2hsl(pal.accent[0], pal.accent[1], pal.accent[2]);
         let dh = ((h2 - h1 + 1.5) % 1) - 0.5;
-        // VERY narrow hue band → letters are close together, all clearly the
-        // same colour family (subtle tonal variation, never a rainbow).
-        if (Math.abs(dh) < 0.05) dh = (dh >= 0 ? 1 : -1) * 0.05;
-        if (Math.abs(dh) > 0.14) dh = Math.sign(dh) * 0.14;
+        // narrow-ish hue band → same colour family, but wide enough to tell letters apart
+        if (Math.abs(dh) < 0.09) dh = (dh >= 0 ? 1 : -1) * 0.09;
+        if (Math.abs(dh) > 0.16) dh = Math.sign(dh) * 0.16;
         // Contrast-aware lightness: on dark backgrounds the letters are light,
         // on light backgrounds they are dark, so the brand always reads.
         const bgLum   = pal.bg[0]*0.299 + pal.bg[1]*0.587 + pal.bg[2]*0.114;
         const lightBg = bgLum > 0.55;
-        // shared IO colour — pushed to the lightness extreme that contrasts
-        // MOST with the background (brightest on dark, darkest on light) so
-        // IO always pops above the rest.
-        const ioHue = (h1 + dh + 1) % 1;
-        const [ir, ig, ib] = lightBg
-          ? fitContrast(ioHue * 360, 0.66, 0.26, pal.bg, PALETTE_LIMITS.brandMin + 1)
-          : hsl2rgb(ioHue, 0.66, 0.82);
-        const ioColor = `rgb(${(ir*255)|0},${(ig*255)|0},${(ib*255)|0})`;
         // seed includes n so different-length runs (landing 10 vs back 11)
         // each get their own stable shuffle within the same cycle
         const rnd = _rng((state.brandSeed >>> 0) + n * 2654435761);
-        // Non-IO letters: give each a DISTINCT slot in both hue and lightness
-        // (evenly spaced + small jitter) so no two ever share a colour, then
-        // shuffle the slot order for randomness. IO stays the shared standout.
-        const m = Math.max(n - 2, 1);              // number of non-IO letters
-        const order = Array.from({length: m}, (_, k) => k);
-        for (let k = m - 1; k > 0; k--) {          // seeded Fisher–Yates
-          const j = Math.floor(rnd() * (k + 1));
-          [order[k], order[j]] = [order[j], order[k]];
+        const shuffle = (m) => {
+          const a = Array.from({length: m}, (_, k) => k);
+          for (let k = m - 1; k > 0; k--) {        // seeded Fisher–Yates
+            const j = Math.floor(rnd() * (k + 1));
+            [a[k], a[j]] = [a[j], a[k]];
+          }
+          return a;
+        };
+        const io = Math.min(2, n);                 // trailing IO letters
+        const dist = (a, b) => Math.hypot(a[0]-b[0], a[1]-b[1], a[2]-b[2]);
+        const build = () => {
+          const hOrder = shuffle(n);               // hue slot per letter
+          // contrast slot per letter: IO gets the two top slots, rest shuffled
+          const rest = shuffle(n - io);
+          const lOrder = [...rest, ...shuffle(io).map(k => n - io + k)];
+          return Array.from({length: n}, (_, i) => {
+            const hf  = n > 1 ? hOrder[i] / (n - 1) : 0;
+            const cf  = n > 1 ? lOrder[i] / (n - 1) : 1; // 1 = max contrast
+            const hue = (h1 + dh * hf + 1) % 1;
+            const sat = 0.52 + rnd() * 0.16;
+            if (!lightBg) return hsl2rgb(hue, sat, 0.46 + cf * 0.38);
+            // sobre fondo claro: tono más claro que cumple el contraste mínimo, y desde ahí se oscurece por slot
+            const top = rgb2hsl(...fitContrast(hue * 360, sat, 0.55, pal.bg, PALETTE_LIMITS.brandMin + 0.4))[2];
+            return hsl2rgb(hue, sat, Math.max(0.06, top - cf * 0.26));
+          });
+        };
+        // re-roll until every pair of letters is clearly different
+        let cols = build(), best = cols, bestMin = -1;
+        for (let tries = 0; tries < 40; tries++) {
+          let mn = Infinity;
+          for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) mn = Math.min(mn, dist(cols[a], cols[b]));
+          if (mn > bestMin) { bestMin = mn; best = cols; }
+          if (mn >= 0.075) break;
+          cols = build();
         }
-        const litLo = lightBg ? 0.32 : 0.48;
-        const litSpan = 0.18;
-        return Array.from({length: n}, (_, i) => {
-          if (i >= n - 2) return ioColor;          // IO: same colour
-          const slot = order[i];                   // distinct slot → no repeats
-          const f    = m > 1 ? slot / (m - 1) : 0; // 0..1 across the band
-          const hue  = (h1 + dh * f + 1) % 1;      // distinct hue per letter
-          const lit  = litLo + f * litSpan;        // distinct lightness too
-          // sobre fondo claro se oscurece lo necesario para no bajar del contraste mínimo
-          const [r, g, b] = lightBg
-            ? fitContrast(hue * 360, 0.58, lit, pal.bg, PALETTE_LIMITS.brandMin + 0.4)
-            : hsl2rgb(hue, 0.58, lit);
-          return `rgb(${(r*255)|0},${(g*255)|0},${(b*255)|0})`;
-        });
+        return best.map(([r, g, b]) => `rgb(${(r*255)|0},${(g*255)|0},${(b*255)|0})`);
       };
 
       // ── Palette tween (degradé suave UI + WebGL background) ──────
