@@ -37,10 +37,10 @@ window.I18N = {
 
     // ── EXPERIENCES section ───────────────────────────────────
     "exp.brand": "Immersive Experiences",
-    "exp.nav.home": "Projects",
+    "exp.nav.home": "Portfolio",
     "exp.nav.dome": "Fulldome",
     "exp.nav.performance": "Performance",
-    "exp.title.home": "Projects",
+    "exp.title.home": "Portfolio",
     "exp.kicker.home": "Immersive Experiences",
     "exp.title.dome": "Fulldome",
     "exp.kicker.dome": "Immersive Experiences",
@@ -49,11 +49,11 @@ window.I18N = {
 
     // ── INSTALLATIONS section ─────────────────────────────────
     "inst.brand": "Interactive Installations",
-    "inst.nav.home": "Projects",
+    "inst.nav.home": "Portfolio",
     "inst.nav.interactive": "Interactive",
     "inst.nav.corporate": "Corporate",
     "inst.nav.events": "Events",
-    "inst.title.home": "Projects",
+    "inst.title.home": "Portfolio",
     "inst.kicker.home": "Interactive Installations",
     "inst.title.interactive": "Interactive",
     "inst.kicker.interactive": "Interactive",
@@ -64,7 +64,7 @@ window.I18N = {
 
     // ── APPS section ──────────────────────────────────────────
     "apps.brand": "Apps & Web",
-    "apps.nav.home": "Projects",
+    "apps.nav.home": "Portfolio",
     "apps.nav.ar": "AR",
     "apps.nav.retail": "Retail",
     "apps.title.home": "Applications",
@@ -102,16 +102,16 @@ window.I18N = {
 
     // ── SOUND section ─────────────────────────────────────────
     "snd.brand": "Segno Sound",
-    "snd.nav.home": "Projects",
+    "snd.nav.home": "Portfolio",
     "snd.nav.film": "Film / Series",
     "snd.nav.animation": "Animation",
     "snd.nav.sonic": "Sonic Brand",
     "snd.nav.openings": "Openings",
     "snd.nav.advertising": "Advertising",
-    "snd.nav.services": "Services",
+    "snd.nav.services": "Studio",
     "snd.nav.about": "About",
     "snd.nav.contact": "Contact",
-    "snd.title.home": "Projects",
+    "snd.title.home": "Portfolio",
     "snd.kicker.home": "Portfolio",
     "snd.title.film": "Film / Series",
     "snd.kicker.film": "Film &amp; Series",
@@ -126,7 +126,7 @@ window.I18N = {
 
     // SERVICES view
     "snd.services.kicker": "Made for broadcast. Built for every screen.",
-    "snd.services.title": "Services",
+    "snd.services.title": "Studio",
     "snd.stats.projects.label": "Projects delivered",
     "snd.stats.countries.label": "Countries",
     "snd.stats.atmos.label": "Certified mix",
@@ -351,10 +351,10 @@ window.I18N = {
 
     // ── EXPERIENCIAS ──────────────────────────────────────────
     "exp.brand": "Experiencias Inmersivas",
-    "exp.nav.home": "Proyectos",
+    "exp.nav.home": "Portfolio",
     "exp.nav.dome": "Fulldome",
     "exp.nav.performance": "Performance",
-    "exp.title.home": "Proyectos",
+    "exp.title.home": "Portfolio",
     "exp.kicker.home": "Experiencias Inmersivas",
     "exp.title.dome": "Fulldome",
     "exp.kicker.dome": "Experiencias Inmersivas",
@@ -363,11 +363,11 @@ window.I18N = {
 
     // ── INSTALACIONES ─────────────────────────────────────────
     "inst.brand": "Instalaciones Interactivas",
-    "inst.nav.home": "Proyectos",
+    "inst.nav.home": "Portfolio",
     "inst.nav.interactive": "Interactivas",
     "inst.nav.corporate": "Corporativo",
     "inst.nav.events": "Eventos",
-    "inst.title.home": "Proyectos",
+    "inst.title.home": "Portfolio",
     "inst.kicker.home": "Instalaciones Interactivas",
     "inst.title.interactive": "Interactivas",
     "inst.kicker.interactive": "Interactivas",
@@ -378,7 +378,7 @@ window.I18N = {
 
     // ── APPS ──────────────────────────────────────────────────
     "apps.brand": "Apps & Web",
-    "apps.nav.home": "Proyectos",
+    "apps.nav.home": "Portfolio",
     "apps.nav.ar": "AR",
     "apps.nav.retail": "Retail",
     "apps.title.home": "Aplicaciones",
@@ -412,16 +412,16 @@ window.I18N = {
 
     // ── SONIDO ────────────────────────────────────────────────
     "snd.brand": "Segno Sound",
-    "snd.nav.home": "Proyectos",
+    "snd.nav.home": "Portfolio",
     "snd.nav.film": "Cine / Series",
     "snd.nav.animation": "Animación",
     "snd.nav.sonic": "Identidad Sonora",
     "snd.nav.openings": "Aperturas",
     "snd.nav.advertising": "Publicidad",
-    "snd.nav.services": "Servicios",
+    "snd.nav.services": "Estudio",
     "snd.nav.about": "Nosotros",
     "snd.nav.contact": "Contacto",
-    "snd.title.home": "Proyectos",
+    "snd.title.home": "Portfolio",
     "snd.kicker.home": "Portfolio",
     "snd.title.film": "Cine / Series",
     "snd.kicker.film": "Cine &amp; Series",
@@ -436,7 +436,7 @@ window.I18N = {
 
     // SERVICES view
     "snd.services.kicker": "Hecho para broadcast. Pensado para cada pantalla.",
-    "snd.services.title": "Servicios",
+    "snd.services.title": "Estudio",
     "snd.stats.projects.label": "Proyectos entregados",
     "snd.stats.countries.label": "Países",
     "snd.stats.atmos.label": "Mezcla certificada",
