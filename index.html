@@ -3433,7 +3433,8 @@
 
       const randomPalette = () => {
         const L = PALETTE_LIMITS;
-        const base = Math.random() * 360;
+        // fondo: nunca rosa/lila/magenta — el tono base se elige sólo entre 30° y 250° (naranja→amarillo→verde→cian→azul)
+        const base = 30 + Math.random() * 220;
         let bg;
         do { bg = hsl2rgb(base / 360, rand(L.bgS[0], L.bgS[1]), rand(L.bgL[0], L.bgL[1])); }
         while (relLum(bg) < L.bgMinY);
