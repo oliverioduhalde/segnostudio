@@ -4390,7 +4390,11 @@ Sound Design</a>
         // We pre-empt Vimeo's end screen via timeupdate ~1s before the end.
         const params = new URLSearchParams({
           autoplay: "1", muted: "0", loop: "0",
-          playsinline: "1", title: "0", byline: "0", portrait: "0", dnt: "1"
+          playsinline: "1", title: "0", byline: "0", portrait: "0", dnt: "1",
+          // controles mínimos: sin logo ni botones que lleven a vimeo.com
+          badge: "0", vimeo_logo: "0", sidedock: "0", like: "0", watchlater: "0",
+          share: "0", embed: "0", speed: "0", pip: "0", quality_selector: "0",
+          airplay: "0", chromecast: "0", cc: "0", transcript: "0", watch_full_video: "0"
         });
         if (hash) params.set("h", hash);
 
