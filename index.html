@@ -1125,32 +1125,26 @@
 
       /* brand-shell override por device/orientación se hace vía data-attrs en JS */
 
-      /* Mobile: el menú es un monolito rectangular — un solo bloque con
-         borde exterior y botones separados por líneas finas. */
+      /* Mobile: el menú es un monolito rectangular — botones apilados con
+         separación mínima, mismo ancho, cada uno con su propio reborde. */
       .service-links {
-        gap: 0;
-        border: 1px solid rgba(220, 226, 232, 0.34);
-        border-radius: 6px;
-        overflow: hidden;
-        background: rgba(10, 11, 13, 0.22);
-        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.18);
+        gap: 4px;
       }
 
       .service-links a {
+        position: relative;
         min-height: 46px;
-        padding: 10px 10px;
-        border: 0;
-        border-top: 1px solid rgba(220, 226, 232, 0.22);
-        border-radius: 0;
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+        padding: 10px 26px;
+        border: 1px solid rgba(220, 226, 232, 0.34);
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.06);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.12);
         color: rgba(220, 226, 232, 0.78);
         font-size: 10px;
         line-height: 1.35;
         letter-spacing: 0.1em;
         -webkit-tap-highlight-color: transparent;
       }
-      .service-links a { position: relative; padding-right: 26px; padding-left: 26px; }
       /* Chevron: deja claro que cada fila es un botón */
       .service-links a::after {
         content: "";
@@ -1164,20 +1158,13 @@
         transform: translateY(-50%) rotate(45deg);
         opacity: 0.55;
       }
-      .service-links a:first-child { border-top: 0; }
       .service-links a:active { background: rgba(255, 255, 255, 0.14); }
 
-      .service-links.on-light {
-        border-color: rgba(20, 25, 30, 0.32);
-        background: rgba(20, 25, 30, 0.04);
-        box-shadow: 0 6px 22px rgba(20, 25, 30, 0.10);
-      }
       .service-links.on-light a {
-        border-top-color: rgba(20, 25, 30, 0.18);
-        background: rgba(255, 255, 255, 0.32);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        border-color: rgba(20, 25, 30, 0.30);
+        background: rgba(255, 255, 255, 0.40);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 8px rgba(20, 25, 30, 0.08);
       }
-      .service-links.on-light a:first-child { border-top: 0; }
       .service-links.on-light a:active { background: rgba(20, 25, 30, 0.10); }
 
       .hero {
@@ -1961,44 +1948,34 @@
     body[data-bg="light"] .sonido-nav-link:hover { color: var(--ink); background: var(--surface-hover); }
     body[data-bg="light"] .sonido-nav-link.is-active { color: var(--hot); background: var(--surface-hover); }
 
-    /* Sub-menú de categorías como monolito: un bloque rectangular con borde
-       exterior y botones separados por líneas finas (mismo lenguaje que el
-       menú principal en mobile). Las líneas son box-shadow -1px arriba/izq.;
-       el overflow:hidden del bloque recorta las del borde exterior. */
+    /* Sub-menú de categorías como monolito: bloque rectangular de botones
+       con separación mínima; cada botón tiene su propio reborde. */
     .sonido-nav {
-      gap: 0;
-      border: 1px solid rgba(220,226,232,0.30);
-      border-radius: 6px;
-      background: rgba(255,255,255,0.05);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
-      box-sizing: border-box;
+      gap: 4px;
       padding: 0;
       /* si no entra en una fila, se arma en dos filas completas */
       flex-wrap: wrap;
-      overflow: hidden;
     }
     .sonido-nav-link {
       flex: 1 1 auto;
-      border-radius: 0;
-      padding: 9px 14px;
+      border: 1px solid rgba(220,226,232,0.30);
+      border-radius: 5px;
+      padding: 8px 13px;
       text-align: center;
-      background: transparent;
-      box-shadow: -1px -1px 0 0 rgba(220,226,232,0.20), inset 0 1px 0 rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.05);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
       color: rgba(220,226,232,0.72);
     }
     .sonido-nav-link:active { background: rgba(255,255,255,0.14); }
-    body[data-bg="light"] .sonido-nav {
-      border-color: rgba(20,25,30,0.30);
-      background: rgba(255,255,255,0.36);
-      box-shadow: 0 4px 16px rgba(20,25,30,0.08);
-    }
+    .sonido-nav-link.is-active { border-color: var(--hot); }
     body[data-bg="light"] .sonido-nav-link {
-      background: transparent;
-      box-shadow: -1px -1px 0 0 rgba(20,25,30,0.16), inset 0 1px 0 rgba(255,255,255,0.5);
+      border-color: rgba(20,25,30,0.26);
+      background: rgba(255,255,255,0.40);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
     }
-    body[data-bg="light"] .sonido-nav-link.is-active { background: rgba(255,255,255,0.9); }
+    body[data-bg="light"] .sonido-nav-link.is-active { background: rgba(255,255,255,0.9); border-color: var(--hot); }
     @media (max-width: 720px) {
-      .sonido-nav { padding: 0; }
+      .sonido-nav { padding: 0; gap: 4px; }
       /* Filas completas: 3 por fila, la última fila se estira */
       .sonido-nav-link {
         flex: 1 1 30%;
