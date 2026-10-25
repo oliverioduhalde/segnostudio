@@ -1702,6 +1702,35 @@
       .studio-cell:nth-child(1) { grid-column: span 2; }
       .rider-grid { grid-template-columns: 1fr 1fr; }
     }
+    /* ── Lightbox prev/next — tall, narrow chevrons at the screen edges ── */
+    .video-nav {
+      position: absolute;
+      top: 50%;
+      z-index: 4;
+      width: 56px;
+      height: 120px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: none;
+      color: rgba(220, 226, 232, 0.55);
+      cursor: pointer;
+      transform: translateY(-50%);
+      transition: color .15s, opacity .15s;
+    }
+    .video-nav--prev { left: max(8px, calc(15vw - 84px)); }
+    .video-nav--next { right: max(8px, calc(15vw - 84px)); }
+    .video-nav svg { width: 22px; height: 64px; stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .video-nav:hover, .video-nav:focus-visible { color: #fff; background: none; }
+    .video-nav:disabled { opacity: 0; pointer-events: none; }
+    @media (max-width: 720px) {
+      .video-nav { width: 36px; height: 80px; color: rgba(255, 255, 255, 0.7); }
+      .video-nav--prev { left: 2px; }
+      .video-nav--next { right: 2px; }
+      .video-nav svg { width: 14px; height: 40px; filter: drop-shadow(0 0 3px rgba(0,0,0,0.8)); }
+    }
     /* ── Video end card ─────────────────────────────────────── */
     .video-end-card {
       position: absolute;
@@ -2568,6 +2597,12 @@
   </aside>
 
   <div class="video-lightbox" id="videoLightbox" aria-hidden="true">
+    <button class="video-nav video-nav--prev" id="videoNavPrev" type="button" aria-label="Video anterior" title="Anterior">
+      <svg viewBox="0 0 22 64" aria-hidden="true"><path d="M18 4 4 32l14 28"/></svg>
+    </button>
+    <button class="video-nav video-nav--next" id="videoNavNext" type="button" aria-label="Video siguiente" title="Siguiente">
+      <svg viewBox="0 0 22 64" aria-hidden="true"><path d="M4 4l14 28L4 60"/></svg>
+    </button>
     <div class="video-lightbox__wrap" id="videoWrap">
       <div class="video-lightbox__tools">
         <div id="badge360Modal" class="badge-360-modal" aria-hidden="true">
@@ -4128,6 +4163,27 @@
         }
       });
 
+      // Flechas laterales < > (y teclas ← →): pasan al video anterior/siguiente sin cerrar el visor
+      const videoNavPrev = document.getElementById("videoNavPrev");
+      const videoNavNext = document.getElementById("videoNavNext");
+      const stepVideo = (dir) => {
+        const target = currentPlaylist[currentPlaylistIdx + dir];
+        if (!target) return;
+        hideEndCard();
+        openVideo(target);
+      };
+      const updateVideoNav = () => {
+        videoNavPrev.disabled = currentPlaylistIdx <= 0;
+        videoNavNext.disabled = currentPlaylistIdx < 0 || currentPlaylistIdx >= currentPlaylist.length - 1;
+      };
+      videoNavPrev.addEventListener("click", (e) => { e.stopPropagation(); stepVideo(-1); });
+      videoNavNext.addEventListener("click", (e) => { e.stopPropagation(); stepVideo(1); });
+      window.addEventListener("keydown", (e) => {
+        if (!videoLightbox.classList.contains("is-open") || e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.key === "ArrowLeft") { e.preventDefault(); stepVideo(-1); }
+        else if (e.key === "ArrowRight") { e.preventDefault(); stepVideo(1); }
+      });
+
       const postVimeo = (frame, method, value) => {
         if (!frame?.contentWindow) return;
         frame.contentWindow.postMessage(JSON.stringify({ method, value }), "*");
@@ -4200,6 +4256,7 @@
         // build playlist from currently visible cards
         currentPlaylist = getVisibleCards();
         currentPlaylistIdx = currentPlaylist.indexOf(card);
+        updateVideoNav();
 
         filmCards.forEach(muteFilm);
         card.classList.add("is-audible");
