@@ -29,7 +29,7 @@ window.I18N = {
     "hero.experiences": "Immersive Experiences",
     "hero.installations": "Interactive Installations",
     "hero.sound": "Music\nAudio Post\nSound Design",
-    "hero.apps": "Apps + Web Design",
+    "hero.apps": "Apps\nWeb Design",
     "hero.workshops": "Workshops",
 
     // ── Back-button label (proper noun, same both langs) ──────
@@ -344,7 +344,7 @@ window.I18N = {
     "hero.experiences": "Experiencias Inmersivas",
     "hero.installations": "Instalaciones Interactivas",
     "hero.sound": "Música\nAudio Post\nSound Design",
-    "hero.apps": "Apps + Diseño Web",
+    "hero.apps": "Apps\nDiseño Web",
     "hero.workshops": "Talleres",
 
     "back.brand": "Segno Studio",
