@@ -1942,6 +1942,59 @@
     body[data-bg="light"] .sonido-nav-link { color: var(--ink-3); }
     body[data-bg="light"] .sonido-nav-link:hover { color: var(--ink); background: var(--surface-hover); }
     body[data-bg="light"] .sonido-nav-link.is-active { color: var(--hot); background: var(--surface-hover); }
+
+    /* Sub-menú de categorías como monolito: un bloque rectangular con borde
+       exterior y botones separados por líneas finas (mismo lenguaje que el
+       menú principal en mobile). Las líneas son box-shadow -1px arriba/izq.;
+       el overflow:hidden del bloque recorta las del borde exterior. */
+    .sonido-nav {
+      gap: 0;
+      border: 1px solid rgba(220,226,232,0.30);
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      box-sizing: border-box;
+      padding: 0;
+      /* si no entra en una fila, se arma en dos filas completas */
+      flex-wrap: wrap;
+      overflow: hidden;
+    }
+    .sonido-nav-link {
+      flex: 1 1 auto;
+      border-radius: 0;
+      padding: 9px 14px;
+      text-align: center;
+      background: transparent;
+      box-shadow: -1px -1px 0 0 rgba(220,226,232,0.20), inset 0 1px 0 rgba(255,255,255,0.06);
+      color: rgba(220,226,232,0.72);
+    }
+    .sonido-nav-link:active { background: rgba(255,255,255,0.14); }
+    body[data-bg="light"] .sonido-nav {
+      border-color: rgba(20,25,30,0.30);
+      background: rgba(255,255,255,0.36);
+      box-shadow: 0 4px 16px rgba(20,25,30,0.08);
+    }
+    body[data-bg="light"] .sonido-nav-link {
+      background: transparent;
+      box-shadow: -1px -1px 0 0 rgba(20,25,30,0.16), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+    body[data-bg="light"] .sonido-nav-link.is-active { background: rgba(255,255,255,0.9); }
+    @media (max-width: 720px) {
+      .sonido-nav { padding: 0; }
+      /* Filas completas: 3 por fila, la última fila se estira */
+      .sonido-nav-link {
+        flex: 1 1 30%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 6px;
+        font-size: 9.5px;
+        letter-spacing: 0.08em;
+        white-space: normal;
+        -webkit-tap-highlight-color: transparent;
+      }
+    }
     /* selector de idioma */
     body[data-bg="light"] .lang-btn { color: var(--ink-3); }
     body[data-bg="light"] .lang-btn:hover { color: var(--ink); }
