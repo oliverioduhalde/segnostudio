@@ -24,7 +24,7 @@
   <meta name="twitter:title" content="SEGNO STUDIO">
   <meta name="twitter:description" content="Immersives, immersive experiences, music and sound design, apps & web, workshops.">
   <meta name="twitter:image" content="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg">
-  <script src="/vimeo-guard.js?v=2"></script>
+  <script src="/vimeo-guard.js?v=3"></script>
   <script src="https://player.vimeo.com/api/player.js"></script>
   <script src="/translations.js?v=6"></script>
   <style>
@@ -4377,6 +4377,43 @@ Web Design</a>
         }
       };
 
+      // prioridad al video abierto: los videos de fondo de la página se pausan mientras el visor
+      // está abierto (todo el ancho de banda va al video que se mira) y vuelven al cerrarlo
+      let bgPaused = [];
+      const bgPause = () => {
+        document.querySelectorAll('iframe[src*="background=1"]').forEach((f) => {
+          if (videoFrameHost.contains(f) || bgPaused.includes(f)) return;
+          postVimeo(f, "pause");
+          bgPaused.push(f);
+        });
+      };
+      const bgResume = () => {
+        bgPaused.forEach((f) => { if (f.isConnected) postVimeo(f, "play"); });
+        bgPaused = [];
+      };
+
+      // datos del video (tamaño, duración, still) pedidos una sola vez; se adelantan al pasar el mouse
+      // o tocar una miniatura, así al abrir el visor no hay que esperarlos
+      const oembedCache = new Map();
+      const videoInfoOf = (id, hash) => {
+        const key = id + (hash ? "/" + hash : "");
+        if (!oembedCache.has(key)) {
+          const p = window.vimeoGuard ? window.vimeoGuard.info(id, hash)
+            : fetch(`https://vimeo.com/api/oembed.json?width=1280&url=${encodeURIComponent("https://vimeo.com/" + key)}`)
+                .then(r => r.ok ? r.json() : {}).catch(() => ({}));
+          const entry = { data: null, promise: p.then(d => (entry.data = d || {})) };
+          oembedCache.set(key, entry);
+        }
+        return oembedCache.get(key);
+      };
+      const warmCard = (e) => {
+        const card = e.target.closest && e.target.closest(".film-card[data-vimeo-id]");
+        if (card) videoInfoOf(card.dataset.vimeoId, card.dataset.vimeoHash);
+      };
+      document.addEventListener("pointerover", warmCard, { passive: true });
+      document.addEventListener("touchstart", warmCard, { passive: true });
+      document.addEventListener("focusin", warmCard);
+
       function closeVideo() {
         if (fsElement() === videoLightbox) exitFs();
         stopVrPan();
@@ -4393,6 +4430,7 @@ Web Design</a>
         videoInfo.setAttribute("aria-hidden", "true");
         setPlayParam(null);
         filmCards.forEach(muteFilm);
+        bgResume();
         activeFilmCard = null;
         activeModalFrame = null;
         vrCamera = { yaw: 0, pitch: 0, fov: 90 };
@@ -4454,6 +4492,7 @@ Web Design</a>
         if (typeof showVideoNav === "function") showVideoNav();
 
         filmCards.forEach(muteFilm);
+        bgPause();
         card.classList.add("is-audible");
         activeFilmCard = card;
         setPlayParam(id);
@@ -4502,18 +4541,17 @@ Web Design</a>
           vrControls.setAttribute("aria-hidden", "true");
         }
 
-        // fetch oEmbed for native dimensions + duration
-        // unlisted videos need the hash in the URL for oEmbed to work
+        // oEmbed (tamaño real + duración + still): si ya está en caché se usa al instante; si no,
+        // el reproductor arranca igual en 16:9 y el visor se ajusta cuando llegan los datos
+        // (unlisted videos need the hash in the URL for oEmbed to work)
+        const meta = videoInfoOf(id, hash);
         let nativeW = 1920, nativeH = 1080, videoDuration = 0;
-        const vimeoUrl = hash ? `https://vimeo.com/${id}/${hash}` : `https://vimeo.com/${id}`;
-        try {
-          const r = await fetch(`https://vimeo.com/api/oembed.json?url=${encodeURIComponent(vimeoUrl)}&width=1920`);
-          if (r.ok) {
-            const d = await r.json();
-            if (d.width && d.height) { nativeW = d.width; nativeH = d.height; }
-            if (d.duration > 0) videoDuration = d.duration;
-          }
-        } catch {}
+        const useMeta = (d) => {
+          if (!d) return;
+          if (!is360 && d.width && d.height) { nativeW = d.width; nativeH = d.height; }
+          if (d.duration > 0) videoDuration = d.duration;
+        };
+        useMeta(meta.data);
 
         // for 360, use standard 16:9 (player renders sphere, not letterboxed)
         if (is360) { nativeW = 16; nativeH = 9; }
@@ -4521,6 +4559,23 @@ Web Design</a>
         lastNative = { w: nativeW, h: nativeH };
         const { w, h } = calcSize(nativeW, nativeH);
         applyFrameSize(w, h);
+
+        // el still del video tapa el visor hasta que el video está realmente reproduciendo (sin ruedita de carga)
+        const cardImg = card.querySelector("img");
+        const setStill = (url) => {
+          if (!url || activeFilmCard !== card) return;
+          videoFrameHost.style.backgroundImage = `url("${url}")`;
+          videoFrameHost.style.backgroundSize = "cover";
+          videoFrameHost.style.backgroundPosition = "center";
+          videoFrameHost.style.backgroundRepeat = "no-repeat";
+        };
+        delete videoFrameHost.dataset.vgBg;
+        videoFrameHost.style.backgroundImage = "";
+        if (meta.data && meta.data.thumbnail_url) setStill(meta.data.thumbnail_url);
+        else {
+          if (cardImg && cardImg.currentSrc) setStill(cardImg.currentSrc);
+          meta.promise.then(d => setStill(d && d.thumbnail_url));
+        }
 
         endCardShown = false;
         clearEndTimer();
@@ -4554,15 +4609,39 @@ Web Design</a>
         const thisFrame = activeModalFrame;
         const want360 = is360;
 
-        activeModalFrame.addEventListener("load", () => {
+        // mostrar el iframe sólo cuando el video ya avanza (antes queda el still);
+        // si el navegador no deja arrancar solo, se muestra igual para poder darle play
+        let shown = false;
+        const showFrame = () => {
+          if (shown || thisFrame !== activeModalFrame || endCardShown) return;
+          shown = true;
           requestAnimationFrame(() => thisFrame.classList.add("is-loaded"));
+        };
+        setTimeout(showFrame, 12000);
 
+        if (!meta.data) meta.promise.then((d) => {
+          if (thisFrame !== activeModalFrame) return;
+          useMeta(d);
+          lastNative = { w: nativeW, h: nativeH };
+          const s2 = calcSize(nativeW, nativeH);
+          applyFrameSize(s2.w, s2.h);
+          if (videoDuration > 2 && !endCardTimer && !endCardShown) {
+            endCardTimer = setTimeout(showEndCard, (videoDuration - 1) * 1000);
+          }
+        });
+
+        activeModalFrame.addEventListener("load", () => {
           // === Official Vimeo Player SDK — built once the iframe is loaded ===
           if (window.Vimeo && window.Vimeo.Player) {
             try {
               modalPlayer = new Vimeo.Player(thisFrame);
               const pl = modalPlayer;
+              modalPlayer.on("playing", showFrame);
+              modalPlayer.on("bufferend", () => pl.getPaused().then((p) => { if (!p) showFrame(); }).catch(() => {}));
               modalPlayer.ready().then(() => {
+                setTimeout(() => {
+                  if (pl === modalPlayer) pl.getPaused().then((p) => { if (p) showFrame(); }).catch(showFrame);
+                }, 3500);
                 modalPlayer.setVolume(0.85).catch(() => {});
                 // reproducir al primer toque: si el navegador bloquea el autoplay con sonido (iPhone), arranca sin sonido
                 // y el botón de volumen de Vimeo lo activa
@@ -4587,6 +4666,7 @@ Web Design</a>
 
               // continuous check — most reliable, carries live seconds+duration
               modalPlayer.on("timeupdate", (d) => {
+                if (d && d.seconds > 0.05) showFrame();
                 if (endCardShown) return;
                 if (d && d.duration > 2 && d.seconds >= d.duration - 1) {
                   showEndCard();
@@ -4596,8 +4676,9 @@ Web Design</a>
               modalPlayer.on("ended", () => showEndCard());
             } catch (e) {
               console.warn("Vimeo SDK init failed", e);
+              showFrame();
             }
-          }
+          } else showFrame();
         }, { once: true });
 
         // Ultimate fallback — oEmbed duration timer (works even if SDK fails)
