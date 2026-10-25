@@ -19,6 +19,18 @@
   var state = new WeakMap();   // iframe -> { base, tries, ok, timer }
   var thumbs = {};             // "id/hash" -> Promise<thumbnail url | "">
 
+  // conexiones a Vimeo abiertas desde que carga la página: el primer video arranca antes
+  ["https://player.vimeo.com", "https://i.vimeocdn.com", "https://f.vimeocdn.com",
+   "https://vod-adaptive-ak.vimeocdn.com", "https://fresnel.vimeocdn.com", "https://vimeo.com"].forEach(function (h) {
+    var l = document.createElement("link");
+    l.rel = "preconnect"; l.href = h;
+    if (h === "https://vimeo.com") l.crossOrigin = "anonymous";   // the oEmbed fetch is CORS
+    (document.head || document.documentElement).appendChild(l);
+    var d = document.createElement("link");
+    d.rel = "dns-prefetch"; d.href = h;
+    (document.head || document.documentElement).appendChild(d);
+  });
+
   var css = document.createElement("style");
   css.textContent = "iframe." + WAIT + "{opacity:0!important}";
   (document.head || document.documentElement).appendChild(css);
@@ -29,6 +41,23 @@
     try { f.contentWindow.postMessage(value === undefined ? { method: method } : { method: method, value: value }, ORIGIN); } catch (e) {}
   }
 
+  // Vimeo's oEmbed for a video (size, duration, still), fetched once and shared
+  function info(id, hash) {
+    var key = id + (hash ? "/" + hash : "");
+    if (!thumbs[key]) {
+      thumbs[key] = fetch("https://vimeo.com/api/oembed.json?width=1280&url=" +
+          encodeURIComponent("https://vimeo.com/" + key))
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .catch(function () { return {}; });
+    }
+    return thumbs[key];
+  }
+  function still(id, hash) {
+    return info(id, hash).then(function (d) { return (d && d.thumbnail_url) || ""; });
+  }
+  // the sites use these to show the still at once and to prefetch on hover/touch
+  window.vimeoGuard = { info: info, still: still };
+
   // still of the video behind the (hidden) iframe, from Vimeo's oEmbed
   function poster(f) {
     var m = RE.exec(f.src || ""), p = f.parentElement;
@@ -37,14 +66,7 @@
     var key = m[1] + (h ? "/" + h[1] : "");
     if (p.dataset.vgPoster === key && p.style.backgroundImage) return;
     p.dataset.vgPoster = key;
-    if (!thumbs[key]) {
-      thumbs[key] = fetch("https://vimeo.com/api/oembed.json?width=1280&url=" +
-          encodeURIComponent("https://vimeo.com/" + key))
-        .then(function (r) { return r.ok ? r.json() : {}; })
-        .then(function (d) { return (d && d.thumbnail_url) || ""; })
-        .catch(function () { return ""; });
-    }
-    thumbs[key].then(function (url) {
+    still(m[1], h && h[1]).then(function (url) {
       if (!url || p.dataset.vgPoster !== key) return;
       if (p.dataset.vgBg !== "1" && getComputedStyle(p).backgroundImage !== "none") return;
       p.dataset.vgBg = "1";
