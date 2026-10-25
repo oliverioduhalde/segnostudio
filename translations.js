@@ -28,7 +28,7 @@ window.I18N = {
     // ── Hero service links ────────────────────────────────────
     "hero.experiences": "Immersive Experiences",
     "hero.installations": "Interactive Installations",
-    "hero.sound": "Music + Sound Design",
+    "hero.sound": "Music | Audio Post | Sound Design",
     "hero.apps": "Apps + Web Design",
     "hero.workshops": "Workshops",
 
@@ -343,7 +343,7 @@ window.I18N = {
     // ── Hero service links ────────────────────────────────────
     "hero.experiences": "Experiencias Inmersivas",
     "hero.installations": "Instalaciones Interactivas",
-    "hero.sound": "Música + Diseño Sonoro",
+    "hero.sound": "Música | Audio Post | Sound Design",
     "hero.apps": "Apps + Diseño Web",
     "hero.workshops": "Talleres",
 
