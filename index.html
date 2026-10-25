@@ -1751,17 +1751,20 @@
 
     /* ── Technical rider ───────────────────────────────────── */
     .rider-section { margin-top: 8px; }
+    /* mosaico: 4 columnas balanceadas; el último cuadro de cada una se estira, sin huecos */
     .rider-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
       margin-bottom: 40px;
     }
+    .rider-col { display: flex; flex-direction: column; gap: 10px; }
+    .rider-col > .rider-block:last-child { flex: 1; }
     .rider-block {
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(220,226,232,0.09);
       border-radius: 8px;
-      padding: 14px 16px;
+      padding: 12px 14px;
     }
     .rider-cat {
       margin: 0 0 10px;
@@ -1791,6 +1794,7 @@
       .studio-cell:last-child { grid-column: span 2; }
       .rider-grid { grid-template-columns: 1fr 1fr; }
     }
+    .fmt { letter-spacing: 0; white-space: nowrap; }
     /* ── Lightbox prev/next — tall, narrow chevrons at the screen edges ── */
     .video-nav {
       position: absolute;
@@ -2939,7 +2943,7 @@ Web Design</a>
           <div class="sonido-stat-row" style="margin-bottom:36px">
             <div class="sonido-stat"><strong>400+</strong><span data-i18n="snd.stats.projects.label">Projects delivered</span></div>
             <div class="sonido-stat"><strong>20+</strong><span data-i18n="snd.stats.countries.label">Countries</span></div>
-            <div class="sonido-stat"><strong>Dolby Atmos</strong><span data-i18n="snd.stats.atmos.label">Certified mix · 5.1 · 7.1 · 7.1.2</span></div>
+            <div class="sonido-stat"><strong>Dolby Atmos</strong><span data-i18n="snd.stats.atmos.label">Certified mix <span class="fmt">5.1·7.1·7.1.2</span></span></div>
           </div>
 
           <!-- STUDIO PHOTO GALLERY — mosaic grid -->
@@ -3000,17 +3004,36 @@ Web Design</a>
           <div class="rider-section">
             <p class="sonido-kicker" style="margin:36px 0 16px" data-i18n="snd.rider.title">Technical Rider</p>
             <div class="rider-grid">
-
+              <div class="rider-col">
               <div class="rider-block">
                 <h4 class="rider-cat" data-i18n="rider.cat.monitoring">Monitoring</h4>
                 <ul class="rider-list">
-                  <li data-i18n="rider.item.atmos_system">Dolby Atmos system · 5.1 · 7.1 · 7.1.2</li>
+                  <li data-i18n="rider.item.atmos_system">Dolby Atmos system <span class="fmt">5.1·7.1·7.1.2</span></li>
                   <li data-i18n="rider.item.genelec">5.1 Genelec system</li>
                   <li data-i18n="rider.item.event_2020">2.0 Event 20/20 BAS system</li>
                   <li>Yamaha NS-10M</li>
                 </ul>
               </div>
-
+              <div class="rider-block">
+                <h4 class="rider-cat" data-i18n="rider.cat.mics">Microphones</h4>
+                <ul class="rider-list">
+                  <li>Neumann U87i</li>
+                  <li>Rode NT2-A</li>
+                  <li>Shure SM7B</li>
+                  <li>Shure SM58 / SM57</li>
+                  <li>Audio-Technica AT250 / AT2020</li>
+                  <li>AKG C2</li>
+                </ul>
+              </div>
+              <div class="rider-block">
+                <h4 class="rider-cat" data-i18n="rider.cat.consoles">Consoles</h4>
+                <ul class="rider-list">
+                  <li>Yamaha 03D</li>
+                  <li>Yamaha 01V</li>
+                </ul>
+              </div>
+              </div>
+              <div class="rider-col">
               <div class="rider-block">
                 <h4 class="rider-cat" data-i18n="rider.cat.daw">DAW &amp; Software</h4>
                 <ul class="rider-list">
@@ -3021,7 +3044,6 @@ Web Design</a>
                   <li>Max/MSP</li>
                 </ul>
               </div>
-
               <div class="rider-block">
                 <h4 class="rider-cat" data-i18n="rider.cat.plugins">Plugins &amp; Bundles</h4>
                 <ul class="rider-list">
@@ -3037,16 +3059,8 @@ Web Design</a>
                   <li>Plugin Alliance Ultimate</li>
                 </ul>
               </div>
-
-              <div class="rider-block">
-                <h4 class="rider-cat" data-i18n="rider.cat.interfaces">Interfaces &amp; Routing</h4>
-                <ul class="rider-list">
-                  <li>RME Fireface UFX</li>
-                  <li>MOTU 2408mkIII</li>
-                  <li>MOTU MTP AV</li>
-                </ul>
               </div>
-
+              <div class="rider-col">
               <div class="rider-block">
                 <h4 class="rider-cat" data-i18n="rider.cat.processing">Processing &amp; Control</h4>
                 <ul class="rider-list">
@@ -3058,27 +3072,23 @@ Web Design</a>
                   <li>BK Precision Oscilloscope</li>
                 </ul>
               </div>
-
               <div class="rider-block">
-                <h4 class="rider-cat" data-i18n="rider.cat.consoles">Consoles</h4>
+                <h4 class="rider-cat" data-i18n="rider.cat.interfaces">Interfaces &amp; Routing</h4>
                 <ul class="rider-list">
-                  <li>Yamaha 03D</li>
-                  <li>Yamaha 01V</li>
+                  <li>RME Fireface UFX</li>
+                  <li>MOTU 2408mkIII</li>
+                  <li>MOTU MTP AV</li>
                 </ul>
               </div>
-
               <div class="rider-block">
-                <h4 class="rider-cat" data-i18n="rider.cat.mics">Microphones</h4>
+                <h4 class="rider-cat" data-i18n="rider.cat.field">Field Recording &amp; Portable</h4>
                 <ul class="rider-list">
-                  <li>Neumann U87i</li>
-                  <li>Rode NT2-A</li>
-                  <li>Shure SM7B</li>
-                  <li>Shure SM58 / SM57</li>
-                  <li>Audio-Technica AT250 / AT2020</li>
-                  <li>AKG C2</li>
+                  <li>Zoom H4 Ambisonic Field Recorder</li>
+                  <li>Tascam Field Recorder</li>
                 </ul>
               </div>
-
+              </div>
+              <div class="rider-col">
               <div class="rider-block">
                 <h4 class="rider-cat" data-i18n="rider.cat.instruments">Instruments &amp; Controllers</h4>
                 <ul class="rider-list">
@@ -3090,15 +3100,6 @@ Web Design</a>
                   <li>Korg nanoPAD2</li>
                 </ul>
               </div>
-
-              <div class="rider-block">
-                <h4 class="rider-cat" data-i18n="rider.cat.field">Field Recording &amp; Portable</h4>
-                <ul class="rider-list">
-                  <li>Zoom H4 Ambisonic Field Recorder</li>
-                  <li>Tascam Field Recorder</li>
-                </ul>
-              </div>
-
               <div class="rider-block">
                 <h4 class="rider-cat" data-i18n="rider.cat.headphones">Headphones</h4>
                 <ul class="rider-list">
@@ -3107,7 +3108,6 @@ Web Design</a>
                   <li>Audio-Technica ATH-M50</li>
                 </ul>
               </div>
-
               <div class="rider-block">
                 <h4 class="rider-cat" data-i18n="rider.cat.amenities">Amenities</h4>
                 <ul class="rider-list">
@@ -3116,7 +3116,7 @@ Web Design</a>
                   <li data-i18n="rider.item.toilet">Toilet</li>
                 </ul>
               </div>
-
+              </div>
             </div>
           </div>
 
