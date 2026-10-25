@@ -769,6 +769,18 @@
       color: rgba(220, 226, 232, 0.24);
     }
 
+    /* Credits line — full row under client · type · category */
+    .video-lightbox__info { flex-wrap: wrap; }
+    .info-credits {
+      flex-basis: 100%;
+      text-align: center;
+      color: rgba(220, 226, 232, 0.62);
+      font-size: 0.9em;
+      letter-spacing: 0.1em;
+      line-height: 1.5;
+    }
+    .info-credits[hidden] { display: none; }
+
     .contact-strip {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2626,6 +2638,7 @@
         <span class="info-type" id="infoType"></span>
         <span class="info-sep">·</span>
         <span class="info-cat" id="infoCat"></span>
+        <span class="info-credits" id="infoCredits" hidden></span>
       </div>
     </div>
   </div>
@@ -3283,6 +3296,11 @@
           // textContent is safer and faster.
           if (/[<&]/.test(value)) el.innerHTML = value;
           else                    el.textContent = value;
+        });
+
+        // inline bilingual text (e.g. film type labels from SONIDO_VIDEOS)
+        document.querySelectorAll('[data-l10n-en]').forEach(el => {
+          el.textContent = lang === 'es' ? el.dataset.l10nEs : el.dataset.l10nEn;
         });
 
         // attribute translations (alt, title, aria-label, placeholder…)
@@ -4016,6 +4034,7 @@
       const infoClient = document.getElementById("infoClient");
       const infoType = document.getElementById("infoType");
       const infoCat = document.getElementById("infoCat");
+      const infoCredits = document.getElementById("infoCredits");
       const badge360Modal = document.getElementById("badge360Modal");
       const vrControls = document.getElementById("vrControls");
       const filmCards = Array.from(document.querySelectorAll(".film-card"));
@@ -4194,7 +4213,9 @@
         if (card.dataset.sonidoTitle) {
           client = card.dataset.sonidoTitle;
           // Prefer i18n key (resolves to current lang) over the stored raw label
-          type   = card.dataset.sonidoTypeKey ? tr(card.dataset.sonidoTypeKey) : card.dataset.sonidoType;
+          type   = card.dataset.sonidoTypeKey ? tr(card.dataset.sonidoTypeKey)
+                 : card.dataset.sonidoTypeEn ? (currentLang === "es" ? card.dataset.sonidoTypeEs : card.dataset.sonidoTypeEn)
+                 : card.dataset.sonidoType;
           cat    = card.dataset.sonidoCatKey  ? tr(card.dataset.sonidoCatKey)  : card.dataset.sonidoCat;
         } else {
           const row = card.closest(".project-row");
@@ -4207,6 +4228,10 @@
         infoClient.textContent = client;
         infoType.textContent = type;
         infoCat.textContent = cat;
+        const credits = card.dataset.sonidoCreditsEn
+          ? (currentLang === "es" ? card.dataset.sonidoCreditsEs : card.dataset.sonidoCreditsEn) : "";
+        infoCredits.textContent = credits;
+        infoCredits.hidden = !credits;
         videoInfo.setAttribute("aria-hidden", "false");
         // flap animation on info strip — same style as airport board
         if (typeof flapText === "function") {
@@ -4558,14 +4583,14 @@
       const SONIDO_VIDEOS = {
         film: [
           { id: "1238915296", title: "Dibu Martínez: El pibe que ataja el tiempo", type: "Netflix · Sound Design & Atmos Surround Mix", thumbnail: "https://img.youtube.com/vi/HHxSvR5k-hQ/maxresdefault.jpg" },
-          { id: "939757838", title: "Los Ladrones", type: "Netflix" },
-          { id: "939643550", title: "El vendedor de ilusiones", type: "Netflix" },
-          { id: "941058800", title: "Jugada peligrosa", type: "HBO" },
-          { id: "940891488", title: "Phantom Sky Japan", type: "Cortometraje" },
-          { id: "939757855", title: "Shared Vision", type: "Documental" },
-          { id: "939757587", title: "Fire Earth Air Water", type: "Cortometraje" },
-          { id: "939754958", title: "Sammy Carlson", type: "Documental" },
-          { id: "939757779", title: "Del Potro, El Último Match Point", type: "Serie Documental" },
+          { id: "939757838", title: "Los Ladrones", type: { es: "Netflix · Largometraje · 118 min", en: "Netflix · Feature film · 118 min" }, credits: { es: "Diseño sonoro, edición de sonido, ADR, Foley, mezcla surround y masterización", en: "Sound design, sound editing, ADR, Foley, surround mix & mastering" } },
+          { id: "939643550", title: "El vendedor de ilusiones", type: { es: "Netflix · Documental · 130 min", en: "Netflix · Documentary · 130 min" }, credits: { es: "Basado en el caso Generación Zoe (Cositorto) · Diseño sonoro, Foley, edición de sonido, ADR, mezcla surround y masterización", en: "Based on the Generación Zoe case (Cositorto) · Sound design, Foley, sound editing, ADR, surround mixing & mastering" } },
+          { id: "941058800", title: "Jugada peligrosa", type: { es: "HBO · Documental · 110 min", en: "HBO · Documentary · 110 min" }, credits: { es: "Diseño sonoro, Foley, edición de sonido, ADR, mezcla surround y masterización", en: "Sound design, Foley, sound editing, ADR, surround mixing & mastering" } },
+          { id: "940891488", title: "Phantom Sky Japan", type: { es: "Cortometraje · Japón", en: "Short film · Japan" }, credits: { es: "Diseño sonoro, Foley, ADR, edición de sonido, mezcla surround y masterización · Música original: ONA SOUND", en: "Sound design, Foley, ADR, sound editing, surround mix & mastering · Original score: ONA SOUND" } },
+          { id: "939757855", title: "Shared Vision", type: { es: "Netflix · Documental · 55 min", en: "Netflix · Documentary · 55 min" }, credits: { es: "Diseño sonoro, Foley, edición de sonido, ADR, mezcla surround y masterización · Música original: ONA SOUND", en: "Sound design, Foley, sound editing, ADR, surround mixing & mastering · Original score: ONA SOUND" } },
+          { id: "939757587", title: "Fire Earth Air Water", type: { es: "Cortometraje", en: "Short film" }, credits: { es: "Diseño sonoro, edición de sonido, mezcla surround y masterización", en: "Sound design, sound editing, surround mix & mastering" } },
+          { id: "939754958", title: "Sammy Carlson", type: { es: "Cortometraje documental · 23 min", en: "Documentary short · 23 min" }, credits: { es: "Diseño sonoro, Foley, edición de sonido, ADR, mezcla surround y masterización · Música original: ONA SOUND", en: "Sound design, Foley, sound editing, ADR, surround mixing & mastering · Original score: ONA SOUND" } },
+          { id: "939757779", title: "Del Potro, El Último Match Point", type: { es: "Star+ · Serie documental · 120 min", en: "Star+ · Documentary series · 120 min" }, credits: { es: "Diseño sonoro, Foley, edición de sonido, ADR, mezcla surround y masterización", en: "Sound design, Foley, sound editing, ADR, surround mixing & mastering" } },
           { id: "1187928872", title: "Eternia", type: "Cortometraje", thumbnail: "https://img.youtube.com/vi/Phu2yQamdBE/maxresdefault.jpg" },
           { id: "1187928955", title: "Lali: La que le gana al tiempo", type: "Netflix" },
           { id: "1187928975", title: "Adiós Madrid", type: "Cine", thumbnail: "https://img.youtube.com/vi/gTKOJjX1TgM/maxresdefault.jpg" },
@@ -4636,7 +4661,9 @@
         // raw brand names with no translation key map here are left as-is
       };
       const typeI18nKey  = (raw) => VIDEO_TYPE_KEYS[raw] || null;
-      const typeDisplay  = (raw) => { const k = VIDEO_TYPE_KEYS[raw]; return k ? tr(k) : raw; };
+      // Bilingual { es, en } values (type / credits) resolve to the current language
+      const l10n         = (v) => (v && typeof v === "object") ? (v[currentLang] || v.en || v.es || "") : (v || "");
+      const typeDisplay  = (raw) => { const k = VIDEO_TYPE_KEYS[raw]; return k ? tr(k) : l10n(raw); };
       const catDisplay   = (catKey) => { const k = CAT_KEYS[catKey]; return k ? tr(k) : catKey; };
 
       const sonidoSection  = document.getElementById("sonidoSection");
@@ -4653,9 +4680,16 @@
         card.dataset.sonidoTypeKey = typeI18nKey(v.type) || '';
         card.dataset.sonidoCat     = catDisplay(catKey);
         card.dataset.sonidoCatKey  = CAT_KEYS[catKey] || '';
+        if (v.type && typeof v.type === "object") {
+          card.dataset.sonidoTypeEs = v.type.es; card.dataset.sonidoTypeEn = v.type.en;
+        }
+        if (v.credits) {
+          card.dataset.sonidoCreditsEs = v.credits.es; card.dataset.sonidoCreditsEn = v.credits.en;
+        }
         // Type span gets data-i18n when translatable so applyLang() refreshes it on lang switch
         const tKey = typeI18nKey(v.type);
-        const typeAttr = tKey ? ` data-i18n="${tKey}"` : '';
+        const typeAttr = tKey ? ` data-i18n="${tKey}"`
+          : (v.type && typeof v.type === "object") ? ` data-l10n-es="${v.type.es}" data-l10n-en="${v.type.en}"` : '';
         const meta = `<div class="film-meta"><strong>${v.title}</strong><span${typeAttr}>${typeDisplay(v.type)}</span></div>`;
         if (useStill) {
           const img = document.createElement("img");
