@@ -1795,9 +1795,9 @@
     .video-nav {
       position: absolute;
       top: 50%;
-      z-index: 4;
-      width: 56px;
-      height: 120px;
+      z-index: 12; /* above iframe and end card */
+      width: min(120px, 14vw);
+      height: 60vh;
       display: grid;
       place-items: center;
       padding: 0;
@@ -1807,17 +1807,31 @@
       color: rgba(220, 226, 232, 0.55);
       cursor: pointer;
       transform: translateY(-50%);
-      transition: color .15s, opacity .15s;
+      opacity: 0;
+      transition: color .15s, opacity .3s ease;
     }
-    .video-nav--prev { left: max(8px, calc(15vw - 84px)); }
-    .video-nav--next { right: max(8px, calc(15vw - 84px)); }
+    .video-nav--prev { left: max(0px, calc(15vw - 120px)); }
+    .video-nav--next { right: max(0px, calc(15vw - 120px)); }
+    /* las flechas sólo aparecen con mouse/dedo encima (clase nav-visible la pone el JS) */
+    .nav-visible .video-nav, .video-nav:hover, .video-nav:focus-visible,
+    .nav-visible .lb-nav, .lb-nav:hover, .lb-nav:focus-visible { opacity: 1; }
+    .lb-nav { opacity: 0; transition: color 0.18s ease, transform 0.18s ease, opacity .3s ease; }
+    /* fullscreen del visor completo: el video ocupa toda la pantalla y las flechas quedan encima */
+    .video-lightbox:fullscreen, .video-lightbox:-webkit-full-screen { padding: 0; background: #000; }
+    .video-lightbox:fullscreen .video-lightbox__frame,
+    .video-lightbox:-webkit-full-screen .video-lightbox__frame { border-radius: 0; box-shadow: none; }
+    .video-lightbox:fullscreen .video-lightbox__info,
+    .video-lightbox:-webkit-full-screen .video-lightbox__info { display: none; }
+    .video-lightbox:fullscreen .video-nav--prev, .video-lightbox:-webkit-full-screen .video-nav--prev { left: 0; }
+    .video-lightbox:fullscreen .video-nav--next, .video-lightbox:-webkit-full-screen .video-nav--next { right: 0; }
+    .video-lightbox:fullscreen .video-nav svg, .video-lightbox:-webkit-full-screen .video-nav svg { filter: drop-shadow(0 0 4px rgba(0,0,0,0.85)); }
     .video-nav svg { width: 22px; height: 64px; stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .video-nav:hover, .video-nav:focus-visible { color: #fff; background: none; }
-    .video-nav:disabled { opacity: 0; pointer-events: none; }
+    .video-nav:disabled, .nav-visible .video-nav:disabled { opacity: 0; pointer-events: none; }
     @media (max-width: 720px) {
-      .video-nav { width: 36px; height: 80px; color: rgba(255, 255, 255, 0.7); }
-      .video-nav--prev { left: 2px; }
-      .video-nav--next { right: 2px; }
+      .video-nav { width: 48px; height: 50vh; color: rgba(255, 255, 255, 0.8); }
+      .video-nav--prev { left: 0; }
+      .video-nav--next { right: 0; }
       .video-nav svg { width: 14px; height: 40px; filter: drop-shadow(0 0 3px rgba(0,0,0,0.8)); }
     }
     /* ── Video end card ─────────────────────────────────────── */
@@ -4327,8 +4341,37 @@ Web Design</a>
         videoNavPrev.disabled = currentPlaylistIdx <= 0;
         videoNavNext.disabled = currentPlaylistIdx < 0 || currentPlaylistIdx >= currentPlaylist.length - 1;
       };
-      videoNavPrev.addEventListener("click", (e) => { e.stopPropagation(); stepVideo(-1); });
-      videoNavNext.addEventListener("click", (e) => { e.stopPropagation(); stepVideo(1); });
+      // Mostrar flechas sólo mientras hay mouse/dedo encima; se apagan solas a los 2.5 s.
+      // En touch, el primer toque sobre una flecha oculta sólo la muestra (no salta de video).
+      const navReveal = (box, ms = 2500) => {
+        let t = null;
+        const show = () => {
+          box.classList.add("nav-visible");
+          clearTimeout(t);
+          t = setTimeout(() => box.classList.remove("nav-visible"), ms);
+        };
+        box.addEventListener("pointermove", (e) => { if (e.pointerType === "mouse") show(); });
+        box.addEventListener("pointerdown", (e) => {
+          if (e.pointerType !== "mouse" && e.target.closest(".video-nav, .lb-nav") && !box.classList.contains("nav-visible")) {
+            box.dataset.navSwallow = "1";
+          }
+          show();
+        }, true);
+        box.addEventListener("click", (e) => {
+          if (box.dataset.navSwallow) { delete box.dataset.navSwallow; e.stopPropagation(); e.preventDefault(); }
+        }, true);
+        return show;
+      };
+      window.__segnoNavReveal = navReveal;
+      const showVideoNav = navReveal(videoLightbox);
+      // un toque/clic dentro del reproductor de Vimeo no llega a la página, pero le saca el foco → mostramos las flechas
+      window.addEventListener("blur", () => {
+        if (!videoLightbox.classList.contains("is-open")) return;
+        showVideoNav();
+        setTimeout(() => { if (document.activeElement === activeModalFrame) activeModalFrame.blur(); window.focus(); }, 50);
+      });
+      videoNavPrev.addEventListener("click", (e) => { e.stopPropagation(); stepVideo(-1); showVideoNav(); });
+      videoNavNext.addEventListener("click", (e) => { e.stopPropagation(); stepVideo(1); showVideoNav(); });
       window.addEventListener("keydown", (e) => {
         if (!videoLightbox.classList.contains("is-open") || e.metaKey || e.ctrlKey || e.altKey) return;
         if (e.key === "ArrowLeft") { e.preventDefault(); stepVideo(-1); }
@@ -4351,6 +4394,7 @@ Web Design</a>
       };
 
       function closeVideo() {
+        if (fsElement() === videoLightbox) exitFs();
         stopVrPan();
         if (modalPlayer) { try { modalPlayer.destroy(); } catch {} modalPlayer = null; }
         videoLightbox.classList.remove("is-open");
@@ -4377,9 +4421,24 @@ Web Design</a>
         videoFrameHost.style.height = h + "px";
       }
 
+      const fsElement = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+      const exitFs = () => {
+        const ex = document.exitFullscreen || document.webkitExitFullscreen;
+        if (ex) { try { const r = ex.call(document); if (r && r.catch) r.catch(() => {}); } catch {} }
+      };
+      // el navegador soporta pantalla completa de un elemento (iPhone no: ahí queda la del propio Vimeo)
+      const canFsLightbox = !!(videoLightbox.requestFullscreen || videoLightbox.webkitRequestFullscreen);
+      let lastNative = null;
+
       function calcSize(nativeW, nativeH) {
         const vw = window.innerWidth;
         const vh = window.innerHeight;
+        if (fsElement() === videoLightbox) {
+          const r = nativeH / nativeW;
+          let w = vw, h = Math.round(vw * r);
+          if (h > vh) { h = vh; w = Math.round(vh / r); }
+          return { w, h };
+        }
         const isMobile = vw <= 720;
         const maxW = isMobile ? vw - 24 : Math.round(vw * 0.70);
         const infoH = 42;
@@ -4408,6 +4467,7 @@ Web Design</a>
         currentPlaylist = getVisibleCards();
         currentPlaylistIdx = currentPlaylist.indexOf(card);
         updateVideoNav();
+        if (typeof showVideoNav === "function") showVideoNav();
 
         filmCards.forEach(muteFilm);
         card.classList.add("is-audible");
@@ -4474,6 +4534,7 @@ Web Design</a>
         // for 360, use standard 16:9 (player renders sphere, not letterboxed)
         if (is360) { nativeW = 16; nativeH = 9; }
 
+        lastNative = { w: nativeW, h: nativeH };
         const { w, h } = calcSize(nativeW, nativeH);
         applyFrameSize(w, h);
 
@@ -4494,6 +4555,8 @@ Web Design</a>
           share: "0", embed: "0", speed: "0", pip: "0", quality_selector: "0",
           airplay: "0", chromecast: "0", cc: "0", transcript: "0", watch_full_video: "0"
         });
+        // la pantalla completa la maneja nuestro botón (visor entero, con flechas); sin API de elemento (iPhone) queda la de Vimeo
+        if (canFsLightbox) params.set("fullscreen", "0");
         if (hash) params.set("h", hash);
 
         activeModalFrame = document.createElement("iframe");
@@ -4626,11 +4689,21 @@ Web Design</a>
         }
       }
 
+      // Pantalla completa sobre el visor entero (no sobre el iframe) para que las flechas < > sigan disponibles
       videoFullscreen.addEventListener("click", () => {
-        const target = videoFrameHost;
-        const request = target.requestFullscreen || target.webkitRequestFullscreen;
-        if (request) request.call(target);
+        if (fsElement() === videoLightbox) { exitFs(); return; }
+        const request = videoLightbox.requestFullscreen || videoLightbox.webkitRequestFullscreen;
+        if (request) { try { const r = request.call(videoLightbox); if (r && r.catch) r.catch(() => {}); } catch {} }
       });
+      const onFsChange = () => {
+        if (videoLightbox.classList.contains("is-open") && lastNative) {
+          const { w, h } = calcSize(lastNative.w, lastNative.h);
+          applyFrameSize(w, h);
+        }
+        showVideoNav();
+      };
+      document.addEventListener("fullscreenchange", onFsChange);
+      document.addEventListener("webkitfullscreenchange", onFsChange);
 
       // (Vimeo modal events are handled by the official SDK in openVideo)
 
@@ -5184,6 +5257,7 @@ Web Design</a>
       photoLightboxPrev.addEventListener("click", e => { e.stopPropagation(); stepPhoto(-1); });
       photoLightboxNext.addEventListener("click", e => { e.stopPropagation(); stepPhoto(1); });
       photoLightboxClose.addEventListener("click", closePhoto);
+      const showPhotoNav = window.__segnoNavReveal ? window.__segnoNavReveal(photoLightbox) : () => {};
       photoLightbox.addEventListener("click", e => { if (e.target === photoLightbox) closePhoto(); });
       window.addEventListener("keydown", e => {
         if (!photoLightbox.classList.contains("is-open")) return;
@@ -5202,6 +5276,7 @@ Web Design</a>
         photoIndex = photoList.indexOf(img);
         photoLightboxPrev.hidden = photoLightboxNext.hidden = photoList.length < 2;
         openPhoto(img.src, caption);
+        showPhotoNav();
       });
 
       // Swipe left/right on touch screens
