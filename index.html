@@ -1795,14 +1795,15 @@
       border: none;
       border-radius: 0;
       background: none;
-      color: rgba(220, 226, 232, 0.55);
+      color: rgba(255, 255, 255, 0.85);
       cursor: pointer;
       transform: translateY(-50%);
+      filter: drop-shadow(0 0 4px rgba(0,0,0,0.85));
       opacity: 0;
       transition: color .15s, opacity .3s ease;
     }
-    .video-nav--prev { left: max(0px, calc(15vw - 80px)); }
-    .video-nav--next { right: max(0px, calc(15vw - 80px)); }
+    .video-nav--prev { left: 4px; }
+    .video-nav--next { right: 4px; }
     /* las flechas sólo aparecen con mouse/dedo encima (clase nav-visible la pone el JS) */
     .nav-visible .video-nav, .video-nav:hover, .video-nav:focus-visible,
     .nav-visible .lb-nav, .lb-nav:hover, .lb-nav:focus-visible { opacity: 1; }
@@ -1813,17 +1814,14 @@
     .video-lightbox:-webkit-full-screen .video-lightbox__frame { border-radius: 0; box-shadow: none; }
     .video-lightbox:fullscreen .video-lightbox__info,
     .video-lightbox:-webkit-full-screen .video-lightbox__info { display: none; }
-    .video-lightbox:fullscreen .video-nav--prev, .video-lightbox:-webkit-full-screen .video-nav--prev { left: 0; }
-    .video-lightbox:fullscreen .video-nav--next, .video-lightbox:-webkit-full-screen .video-nav--next { right: 0; }
-    .video-lightbox:fullscreen .video-nav svg, .video-lightbox:-webkit-full-screen .video-nav svg { filter: drop-shadow(0 0 4px rgba(0,0,0,0.85)); }
     .video-nav svg { width: 22px; height: 64px; stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .video-nav:hover, .video-nav:focus-visible { color: #fff; background: none; }
     .video-nav:disabled, .nav-visible .video-nav:disabled { opacity: 0; pointer-events: none; }
     @media (max-width: 720px) {
-      .video-nav { width: 30px; height: 56px; color: rgba(255, 255, 255, 0.8); }
+      .video-nav { width: 30px; height: 56px; }
       .video-nav--prev { left: 0; }
       .video-nav--next { right: 0; }
-      .video-nav svg { width: 14px; height: 40px; filter: drop-shadow(0 0 3px rgba(0,0,0,0.8)); }
+      .video-nav svg { width: 14px; height: 40px; }
     }
     /* ── Video end card ─────────────────────────────────────── */
     .video-end-card {
@@ -2737,12 +2735,6 @@ Web Design</a>
   </aside>
 
   <div class="video-lightbox" id="videoLightbox" aria-hidden="true">
-    <button class="video-nav video-nav--prev" id="videoNavPrev" type="button" aria-label="Video anterior" title="Anterior">
-      <svg viewBox="0 0 22 64" aria-hidden="true"><path d="M18 4 4 32l14 28"/></svg>
-    </button>
-    <button class="video-nav video-nav--next" id="videoNavNext" type="button" aria-label="Video siguiente" title="Siguiente">
-      <svg viewBox="0 0 22 64" aria-hidden="true"><path d="M4 4l14 28L4 60"/></svg>
-    </button>
     <div class="video-lightbox__wrap" id="videoWrap">
       <div class="video-lightbox__tools">
         <div id="badge360Modal" class="badge-360-modal" aria-hidden="true">
@@ -2765,6 +2757,13 @@ Web Design</a>
         </button>
       </div>
       <div class="video-lightbox__frame" id="videoFrameHost">
+        <!-- flechas < > dentro del cuadro del video: centradas en la imagen, en ventana y en pantalla completa -->
+        <button class="video-nav video-nav--prev" id="videoNavPrev" type="button" aria-label="Video anterior" title="Anterior">
+          <svg viewBox="0 0 22 64" aria-hidden="true"><path d="M18 4 4 32l14 28"/></svg>
+        </button>
+        <button class="video-nav video-nav--next" id="videoNavNext" type="button" aria-label="Video siguiente" title="Siguiente">
+          <svg viewBox="0 0 22 64" aria-hidden="true"><path d="M4 4l14 28L4 60"/></svg>
+        </button>
         <!-- end card — covers Vimeo's end screen, prev/next/menu -->
         <div class="video-end-card" id="videoEndCard" aria-hidden="true">
           <div class="vec-actions">
@@ -3715,7 +3714,12 @@ Web Design</a>
       // ── Mobile/tablet: enter fullscreen on the first user tap ──────
       // browsers require a user gesture — can't be forced on load.
       // (iOS Safari has no fullscreen API for pages → silently no-ops.)
-      const tryEnterFullscreen = () => {
+      const tryEnterFullscreen = (e) => {
+        // tocar un video lo reproduce en la ventana, sin maximizar (se maximiza sólo con el botón cuadrado)
+        if (e && e.target && e.target.closest && e.target.closest(".film-card, .video-lightbox")) {
+          window.addEventListener('pointerdown', tryEnterFullscreen, { once: true });
+          return;
+        }
         const dev = document.body.dataset.device;
         if (dev !== 'mobile' && dev !== 'tablet') return;
         const el = document.documentElement;
@@ -4340,7 +4344,10 @@ Web Design</a>
         return show;
       };
       window.__segnoNavReveal = navReveal;
-      const showVideoNav = navReveal(videoLightbox);
+      // las flechas acompañan a la barra de progreso de Vimeo: aparecen cuando el mouse entra o se mueve sobre el video,
+      // o cuando se lo toca, y se apagan a los 3 s, como la barra
+      const showVideoNav = navReveal(videoLightbox, 3000);
+      videoFrameHost.addEventListener("mouseover", (e) => { if (e.target.tagName === "IFRAME") showVideoNav(); });
       // un toque/clic dentro del reproductor de Vimeo no llega a la página, pero le saca el foco → mostramos las flechas
       window.addEventListener("blur", () => {
         if (!videoLightbox.classList.contains("is-open")) return;
@@ -4554,8 +4561,17 @@ Web Design</a>
           if (window.Vimeo && window.Vimeo.Player) {
             try {
               modalPlayer = new Vimeo.Player(thisFrame);
+              const pl = modalPlayer;
               modalPlayer.ready().then(() => {
                 modalPlayer.setVolume(0.85).catch(() => {});
+                // reproducir al primer toque: si el navegador bloquea el autoplay con sonido (iPhone), arranca sin sonido
+                // y el botón de volumen de Vimeo lo activa
+                if (matchMedia("(hover: none)").matches) setTimeout(() => {
+                  if (pl !== modalPlayer) return;
+                  pl.getPaused().then((paused) => {
+                    if (paused && !endCardShown) pl.setMuted(true).then(() => pl.play()).catch(() => {});
+                  }).catch(() => {});
+                }, 1500);
                 if (want360) {
                   modalPlayer.setCameraProps({ yaw: 0, pitch: 0, roll: 0, fov: 90 }).catch(() => {});
                 }
