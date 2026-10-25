@@ -26,7 +26,7 @@
   <meta name="twitter:image" content="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg">
   <script src="/vimeo-guard.js?v=1"></script>
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="/translations.js?v=4"></script>
+  <script src="/translations.js?v=5"></script>
   <style>
     :root {
       color-scheme: dark;
@@ -1449,6 +1449,10 @@
     .sonido-service-block p { margin: 0; color: rgba(220,226,232,0.56); font-size: 13px; line-height: 1.72; }
 
     .sonido-stat-row { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
+    /* Studio: todo alineado a la izquierda salvo el título */
+    #sv-services .sonido-text-page { text-align: left; }
+    #sv-services .sonido-view-header { text-align: center; }
+    #sv-services .sonido-stat-row { justify-content: flex-start; }
     .sonido-stat {
       display: flex; flex-direction: column; gap: 4px;
       padding: 12px 18px;
@@ -2823,7 +2827,7 @@ Sound Design</a>
           <div class="sonido-stat-row" style="margin-bottom:36px">
             <div class="sonido-stat"><strong>400+</strong><span data-i18n="snd.stats.projects.label">Projects delivered</span></div>
             <div class="sonido-stat"><strong>20+</strong><span data-i18n="snd.stats.countries.label">Countries</span></div>
-            <div class="sonido-stat"><strong>Dolby Atmos</strong><span data-i18n="snd.stats.atmos.label">Certified mix</span></div>
+            <div class="sonido-stat"><strong>Dolby Atmos</strong><span data-i18n="snd.stats.atmos.label">Certified mix · 5.1 · 7.1 · 7.1.2</span></div>
           </div>
 
           <!-- STUDIO PHOTO GALLERY — mosaic grid -->
@@ -2888,7 +2892,7 @@ Sound Design</a>
               <div class="rider-block">
                 <h4 class="rider-cat" data-i18n="rider.cat.monitoring">Monitoring</h4>
                 <ul class="rider-list">
-                  <li data-i18n="rider.item.atmos_system">Dolby Atmos system</li>
+                  <li data-i18n="rider.item.atmos_system">Dolby Atmos system · 5.1 · 7.1 · 7.1.2</li>
                   <li data-i18n="rider.item.genelec">5.1 Genelec system</li>
                   <li data-i18n="rider.item.event_2020">2.0 Event 20/20 BAS system</li>
                   <li>Yamaha NS-10M</li>
