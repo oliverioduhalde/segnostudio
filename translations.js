@@ -129,7 +129,7 @@ window.I18N = {
     "snd.services.title": "Studio",
     "snd.stats.projects.label": "Projects delivered",
     "snd.stats.countries.label": "Countries",
-    "snd.stats.atmos.label": "Certified mix",
+    "snd.stats.atmos.label": "Certified mix · 5.1 · 7.1 · 7.1.2",
     "snd.studio.caption.control":  "Control room · Dolby Atmos + 5.1 Genelec",
     "snd.studio.caption.desk":     "Mix station · Mac Pro M4",
     "snd.studio.caption.booth":    "Recording booth · Neumann U87i",
@@ -146,7 +146,7 @@ window.I18N = {
     "snd.svc.recording.kicker": "Recording",
     "snd.svc.recording.title":  "Voice &amp; Instrument Recording",
     "snd.svc.recording.body":   "Acoustically treated booth with Neumann U87i, Rode NT2-A and Shure SM7B. Voiceover, dubbing, choir, acoustic instrument sessions and portable field recording with Zoom H4 Ambisonics and Tascam.",
-    "snd.svc.voice.kicker":  "Voice &amp; Dubbing",
+    "snd.svc.voice.kicker":  "Voice & Dubbing",
     "snd.svc.voice.title":   "Voiceover, Dubbing &amp; Voice Acting",
     "snd.svc.voice.body":    "Network of professional voice actors in native English and Latin American Spanish, with in-booth direction, translation and script adaptation. Broadcast-ready delivery — no back-and-forth.",
     "snd.svc.mix.kicker":    "Mixing · Mastering · Atmos",
@@ -319,7 +319,7 @@ window.I18N = {
     "video.type.gaming": "Gaming",
 
     // ── Rider items (Spanish-only originals) ─────────────────
-    "rider.item.atmos_system": "Dolby Atmos system",
+    "rider.item.atmos_system": "Dolby Atmos system · 5.1 · 7.1 · 7.1.2",
     "rider.item.genelec": "5.1 Genelec system",
     "rider.item.event_2020": "2.0 Event 20/20 BAS system",
     "rider.item.martin": "Martin electroacoustic",
@@ -439,7 +439,7 @@ window.I18N = {
     "snd.services.title": "Estudio",
     "snd.stats.projects.label": "Proyectos entregados",
     "snd.stats.countries.label": "Países",
-    "snd.stats.atmos.label": "Mezcla certificada",
+    "snd.stats.atmos.label": "Mezcla certificada · 5.1 · 7.1 · 7.1.2",
     "snd.studio.caption.control":  "Sala de control · Dolby Atmos + 5.1 Genelec",
     "snd.studio.caption.desk":     "Estación de mezcla · Mac Pro M4",
     "snd.studio.caption.booth":    "Cabina de grabación · Neumann U87i",
@@ -627,7 +627,7 @@ window.I18N = {
     "video.type.gaming": "Gaming",
 
     // ── Rider items (Spanish-only originals) ─────────────────
-    "rider.item.atmos_system": "Sistema Dolby Atmos",
+    "rider.item.atmos_system": "Sistema Dolby Atmos · 5.1 · 7.1 · 7.1.2",
     "rider.item.genelec": "Sistema 5.1 Genelec",
     "rider.item.event_2020": "Sistema 2.0 Event 20/20 BAS",
     "rider.item.martin": "Martin electroacústica",
