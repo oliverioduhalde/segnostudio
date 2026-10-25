@@ -1682,8 +1682,8 @@
       position: fixed;
       top: 50%;
       z-index: 2;
-      width: 56px;
-      height: 120px;
+      width: 40px;
+      height: 80px;
       display: grid;
       place-items: center;
       padding: 0;
@@ -1707,7 +1707,7 @@
     }
     .lb-nav[hidden] { display: none; }
     @media (max-width: 720px) {
-      .lb-nav { width: 36px; height: 80px; color: rgba(255,255,255,0.7); }
+      .lb-nav { width: 30px; height: 56px; color: rgba(255,255,255,0.7); }
       .lb-nav--prev { left: 4px; }
       .lb-nav--next { right: 4px; }
       .lb-nav svg { width: 14px; height: 40px; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.7)); }
@@ -1800,8 +1800,8 @@
       position: absolute;
       top: 50%;
       z-index: 12; /* above iframe and end card */
-      width: min(120px, 14vw);
-      height: 60vh;
+      width: 40px;
+      height: 80px; /* sólo la flecha es clickeable */
       display: grid;
       place-items: center;
       padding: 0;
@@ -1814,8 +1814,8 @@
       opacity: 0;
       transition: color .15s, opacity .3s ease;
     }
-    .video-nav--prev { left: max(0px, calc(15vw - 120px)); }
-    .video-nav--next { right: max(0px, calc(15vw - 120px)); }
+    .video-nav--prev { left: max(0px, calc(15vw - 80px)); }
+    .video-nav--next { right: max(0px, calc(15vw - 80px)); }
     /* las flechas sólo aparecen con mouse/dedo encima (clase nav-visible la pone el JS) */
     .nav-visible .video-nav, .video-nav:hover, .video-nav:focus-visible,
     .nav-visible .lb-nav, .lb-nav:hover, .lb-nav:focus-visible { opacity: 1; }
@@ -1833,7 +1833,7 @@
     .video-nav:hover, .video-nav:focus-visible { color: #fff; background: none; }
     .video-nav:disabled, .nav-visible .video-nav:disabled { opacity: 0; pointer-events: none; }
     @media (max-width: 720px) {
-      .video-nav { width: 48px; height: 50vh; color: rgba(255, 255, 255, 0.8); }
+      .video-nav { width: 30px; height: 56px; color: rgba(255, 255, 255, 0.8); }
       .video-nav--prev { left: 0; }
       .video-nav--next { right: 0; }
       .video-nav svg { width: 14px; height: 40px; filter: drop-shadow(0 0 3px rgba(0,0,0,0.8)); }
