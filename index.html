@@ -26,7 +26,7 @@
   <meta name="twitter:image" content="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg">
   <script src="/vimeo-guard.js?v=1"></script>
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="/translations.js?v=3"></script>
+  <script src="/translations.js?v=4"></script>
   <style>
     :root {
       color-scheme: dark;
@@ -276,6 +276,9 @@
       text-shadow: 0 0 18px rgba(0, 0, 0, 0.22);
       transition: color 0.4s ease, border-color 0.4s ease, background 0.4s ease, box-shadow 0.18s ease;
     }
+
+    /* Link de varias líneas (Música / Audio Post / Sound Design) */
+    .service-links a.sl-stack { white-space: pre-line; }
 
     /* Fondo claro — botones oscuros legibles */
     .service-links.on-light a {
@@ -1969,7 +1972,9 @@
           <span class="bl" data-letter="S">S</span><span class="bl" data-letter="T">T</span><span class="bl" data-letter="D">D</span><span class="bl" data-letter="I">I</span><span class="bl bl-cx" data-letter="O">O</span>
         </div>
         <nav class="service-links" aria-label="Servicios">
-          <a href="#sonido" data-i18n="hero.sound">Music | Audio Post | Sound Design</a>
+          <a href="#sonido" class="sl-stack" data-i18n="hero.sound">Music
+Audio Post
+Sound Design</a>
           <a href="#experiencias" data-i18n="hero.experiences">Immersive Experiences</a>
           <a href="#instalaciones" data-i18n="hero.installations">Interactive Installations</a>
           <a href="#workshops" data-i18n="hero.workshops">Workshops</a>
