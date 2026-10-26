@@ -26,7 +26,7 @@
   <meta name="twitter:image" content="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg">
   <script src="/vimeo-guard.js?v=3"></script>
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="/translations.js?v=6"></script>
+  <script src="/translations.js?v=7"></script>
   <style>
     :root {
       color-scheme: dark;
@@ -1977,16 +1977,30 @@
       /* Filas completas: 3 por fila, la última fila se estira */
       .sonido-nav-link {
         flex: 1 1 30%;
-        min-height: 40px;
+        min-height: 34px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 8px 6px;
+        padding: 6px 6px;
         font-size: 9.5px;
         letter-spacing: 0.08em;
         white-space: normal;
         -webkit-tap-highlight-color: transparent;
       }
+      /* SEGNO STUDIO ocupa el mismo ancho que el bloque de botones */
+      .sonido-topbar .sonido-back-btn {
+        width: 100%;
+        justify-content: center;
+        position: relative;
+        padding: 3px 13px 1px;
+      }
+      .sonido-topbar .sonido-back-btn svg { position: absolute; left: 13px; }
+      .sonido-back-btn > span { font-size: clamp(2em, 7.4vw, 4em); }
+      /* sin redundancia: no repetir el nombre del botón apretado */
+      .dup-label { display: none; }
+      .sonido-view-header.dup-empty { display: none; }
+      /* cifras un poco más chicas */
+      .sonido-stat strong { font-size: 18px; }
     }
     /* selector de idioma */
     body[data-bg="light"] .lang-btn { color: var(--ink-3); }
@@ -2917,8 +2931,8 @@ Web Design</a>
             <h2 class="sonido-view-title" data-i18n="snd.services.title">Studio</h2>
           </div>
           <div class="sonido-stat-row" style="margin-bottom:36px">
-            <div class="sonido-stat"><strong>400+</strong><span data-i18n="snd.stats.projects.label">Projects delivered</span></div>
-            <div class="sonido-stat"><strong>20+</strong><span data-i18n="snd.stats.countries.label">Countries</span></div>
+            <div class="sonido-stat"><strong data-i18n="snd.stats.projects.num">400+</strong><span data-i18n="snd.stats.projects.label">Projects delivered</span></div>
+            <div class="sonido-stat"><strong data-i18n="snd.stats.countries.num">20+</strong><span data-i18n="snd.stats.countries.label">Countries</span></div>
             <div class="sonido-stat"><strong>Dolby Atmos</strong><span data-i18n="snd.stats.atmos.label">Certified mix <span class="fmt">5.1·7.1·7.1.2</span></span></div>
           </div>
 
@@ -3114,8 +3128,8 @@ Web Design</a>
             <p data-i18n="snd.about.industry.body">Music productions, film, TV, advertising, sonic identity, video games, broadcasting and podcasts.</p>
           </div>
           <div class="sonido-stat-row">
-            <div class="sonido-stat"><strong>400+</strong><span data-i18n="snd.about.stats.projects">Projects</span></div>
-            <div class="sonido-stat"><strong>10+</strong><span data-i18n="snd.about.stats.years">Years</span></div>
+            <div class="sonido-stat"><strong data-i18n="snd.stats.projects.num">400+</strong><span data-i18n="snd.about.stats.projects">Projects</span></div>
+            <div class="sonido-stat"><strong data-i18n="snd.about.stats.years.num">10+</strong><span data-i18n="snd.about.stats.years">Years</span></div>
             <div class="sonido-stat"><strong>Global</strong><span data-i18n="snd.about.stats.reach">Reach</span></div>
           </div>
           <div class="sonido-client-grid">
@@ -3498,6 +3512,20 @@ Web Design</a>
         // data-i18n-kicker key and assigns to data-kicker
         document.querySelectorAll('[data-i18n-kicker]').forEach(el => {
           el.dataset.kicker = tr(el.dataset.i18nKicker);
+        });
+
+        // mobile: header labels that just repeat the pressed menu button
+        // (or the title right below) get .dup-label and are hidden by CSS
+        const norm = t => (t || '').toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g, '');
+        document.querySelectorAll('.sonido-view-header').forEach(h => {
+          const sec = h.closest('.spa-section, .sonido-section') || document;
+          const labels = new Set([...sec.querySelectorAll('.sonido-nav-link')].map(a => norm(a.textContent)));
+          const title = h.querySelector('.sonido-view-title');
+          const kicker = h.querySelector('.sonido-kicker');
+          const tn = norm(title?.textContent);
+          title?.classList.toggle('dup-label', labels.has(tn));
+          kicker?.classList.toggle('dup-label', labels.has(norm(kicker.textContent)) || norm(kicker.textContent) === tn);
+          h.classList.toggle('dup-empty', !!title && title.classList.contains('dup-label') && (!kicker || kicker.classList.contains('dup-label')));
         });
 
         // page <title> + <meta name="description">

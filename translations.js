@@ -127,6 +127,9 @@ window.I18N = {
     // SERVICES view
     "snd.services.kicker": "Made for broadcast. Built for every screen.",
     "snd.services.title": "Studio",
+    "snd.stats.projects.num": "400+",
+    "snd.stats.countries.num": "20+",
+    "snd.about.stats.years.num": "10+",
     "snd.stats.projects.label": "Projects delivered",
     "snd.stats.countries.label": "Countries",
     "snd.stats.atmos.label": "Certified mix <span class='fmt'>5.1·7.1·7.1.2</span>",
@@ -437,6 +440,9 @@ window.I18N = {
     // SERVICES view
     "snd.services.kicker": "Hecho para broadcast. Pensado para cada pantalla.",
     "snd.services.title": "Estudio",
+    "snd.stats.projects.num": "+400",
+    "snd.stats.countries.num": "+20",
+    "snd.about.stats.years.num": "+10",
     "snd.stats.projects.label": "Proyectos entregados",
     "snd.stats.countries.label": "Países",
     "snd.stats.atmos.label": "Mezcla certificada <span class='fmt'>5.1·7.1·7.1.2</span>",
