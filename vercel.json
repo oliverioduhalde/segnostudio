@@ -42,6 +42,14 @@
     {
       "source": "/es/(.*)",
       "destination": "/index.html"
+    },
+    {
+      "source": "/:section(sonido|experiencias|instalaciones|apps|workshops)/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/:section(sonido|experiencias|instalaciones|apps|workshops)",
+      "destination": "/index.html"
     }
   ],
   "github": {
