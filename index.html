@@ -26,7 +26,7 @@
   <meta name="twitter:image" content="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg">
   <script src="/vimeo-guard.js?v=3"></script>
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="/translations.js?v=7"></script>
+  <script src="/translations.js?v=8"></script>
   <style>
     :root {
       color-scheme: dark;
@@ -1493,6 +1493,23 @@
     }
     .sonido-stat strong { font-family: var(--mono); font-size: 22px; font-weight: 400; color: var(--hot); letter-spacing: 0.06em; }
     .sonido-stat span { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(220,226,232,0.48); }
+    /* Hitos compactos: menos aire y cifras 4 cuerpos menos */
+    .sonido-stat-row { gap: 8px; margin-top: 12px; }
+    .sonido-stat { padding: 7px 12px; gap: 2px; }
+    .sonido-stat strong { font-size: 18px; }
+    /* Nosotros: los tres hitos en una sola línea (cifra + texto al lado) */
+    #sv-about .sonido-stat-row { flex-wrap: nowrap; }
+    #sv-about .sonido-stat { flex-direction: row; align-items: baseline; gap: 6px; padding: 6px 10px; white-space: nowrap; }
+    /* Quiénes somos: texto justificado y toda la tipografía 1 cuerpo menos */
+    #sv-about .sonido-kicker { font-size: 11px; }
+    #sv-about .sonido-view-title { font-size: calc(clamp(22px,2.8vw,40px) - 1px); }
+    #sv-about .sonido-service-block::before { font-size: 10px; }
+    #sv-about .sonido-service-block h3 { font-size: 12px; }
+    #sv-about .sonido-service-block p { font-size: 12px; text-align: justify; hyphens: auto; }
+    #sv-about .sonido-stat strong { font-size: 17px; }
+    #sv-about .sonido-stat span,
+    #sv-about .sonido-client-card span { font-size: 8px; }
+    #sv-about .sonido-client-card .client-wordmark { font-size: 16px; }
 
     .sonido-platforms { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; justify-content: center; }
     .sonido-platform-tag {
@@ -2000,7 +2017,9 @@
       .dup-label { display: none; }
       .sonido-view-header.dup-empty { display: none; }
       /* cifras un poco más chicas */
-      .sonido-stat strong { font-size: 18px; }
+      .sonido-stat strong { font-size: 14px; }
+      #sv-about .sonido-stat strong { font-size: 13px; }
+      #sv-about .sonido-stat { padding: 6px 8px; gap: 5px; }
     }
     /* selector de idioma */
     body[data-bg="light"] .lang-btn { color: var(--ink-3); }
@@ -2930,17 +2949,17 @@ Web Design</a>
             <p class="sonido-kicker" data-i18n="snd.services.kicker">Made for broadcast. Built for every screen.</p>
             <h2 class="sonido-view-title" data-i18n="snd.services.title">Studio</h2>
           </div>
-          <div class="sonido-stat-row" style="margin-bottom:36px">
+          <div class="sonido-stat-row" style="margin-bottom:22px">
             <div class="sonido-stat"><strong data-i18n="snd.stats.projects.num">400+</strong><span data-i18n="snd.stats.projects.label">Projects delivered</span></div>
             <div class="sonido-stat"><strong data-i18n="snd.stats.countries.num">20+</strong><span data-i18n="snd.stats.countries.label">Countries</span></div>
-            <div class="sonido-stat"><strong>Dolby Atmos</strong><span data-i18n="snd.stats.atmos.label">Certified mix <span class="fmt">5.1·7.1·7.1.2</span></span></div>
+            <div class="sonido-stat"><strong>Dolby Atmos</strong><span data-i18n="snd.stats.atmos.label">Certified Dolby mix <span class="fmt">5.1 ~ 7.1.2</span></span></div>
           </div>
 
           <!-- STUDIO PHOTO GALLERY — mosaic grid -->
           <div class="studio-gallery">
             <div class="studio-cell">
               <img src="/images/studio/studio-01-control-wide.jpg" alt="Segno Sound — Control Room" loading="lazy">
-              <span class="studio-caption" data-i18n="snd.studio.caption.control">Control room · Dolby Atmos + 5.1 Genelec</span>
+              <span class="studio-caption" data-i18n="snd.studio.caption.control">Control room · Dolby Atmos 7.1.2</span>
             </div>
             <div class="studio-cell">
               <img src="/images/studio/studio-02-control-desk.jpg" alt="Segno Sound — Mixing Desk" loading="lazy">
@@ -3140,6 +3159,10 @@ Web Design</a>
             <div class="sonido-client-card">
               <img src="/images/logos/disney-plus.svg" alt="Disney+" loading="lazy">
               <span>Disney+</span>
+            </div>
+            <div class="sonido-client-card">
+              <img src="/images/logos/vix.svg" alt="ViX" loading="lazy">
+              <span>ViX</span>
             </div>
             <div class="sonido-client-card">
               <img src="/images/logos/hbo.svg" alt="HBO" loading="lazy">
