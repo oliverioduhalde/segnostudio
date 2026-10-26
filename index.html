@@ -26,7 +26,7 @@
   <meta name="twitter:image" content="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg">
   <script src="/vimeo-guard.js?v=3"></script>
   <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="/translations.js?v=8"></script>
+  <script src="/translations.js?v=9"></script>
   <style>
     :root {
       color-scheme: dark;
@@ -1508,6 +1508,20 @@
     #sv-about .sonido-service-block::before { font-size: 10px; }
     #sv-about .sonido-service-block h3 { font-size: 12px; }
     #sv-about .sonido-service-block p { font-size: 12px; line-height: 1.5; text-align: justify; hyphens: auto; }
+    /* Estudio: hitos como un solo bloque monolítico, con poco margen */
+    #sv-services .sonido-view-header { margin-bottom: 8px; }
+    #sv-services .sonido-stat-row {
+      flex-wrap: nowrap; gap: 0; margin: 8px 0 10px;
+      border: 1px solid rgba(220,226,232,0.1); border-radius: 6px; overflow: hidden;
+    }
+    #sv-services .sonido-stat {
+      flex: 1 1 auto; min-width: 0; border: 0; border-radius: 0; padding: 6px 12px; gap: 1px;
+    }
+    #sv-services .sonido-stat + .sonido-stat { border-left: 1px solid rgba(220,226,232,0.1); }
+    body[data-bg="light"] #sv-services .sonido-stat-row { border-color: var(--line); background: var(--surface); }
+    body[data-bg="light"] #sv-services .sonido-stat + .sonido-stat { border-left-color: var(--line); }
+    /* leyendas de las fotos del estudio 30% más chicas */
+    #sv-services .studio-caption { font-size: 6.3px; }
     /* Nosotros y Estudio sin bajada; bloques de Nosotros más compactos */
     #sv-about .sonido-kicker,
     #sv-services .sonido-kicker { display: none; }
@@ -2957,11 +2971,6 @@
             <p class="sonido-kicker" data-i18n="snd.services.kicker">Made for broadcast. Built for every screen.</p>
             <h2 class="sonido-view-title" data-i18n="snd.services.title">Studio</h2>
           </div>
-          <div class="sonido-stat-row" style="margin-bottom:22px">
-            <div class="sonido-stat"><strong data-i18n="snd.stats.projects.num">400+</strong><span data-i18n="snd.stats.projects.label">Projects delivered</span></div>
-            <div class="sonido-stat"><strong data-i18n="snd.stats.countries.num">20+</strong><span data-i18n="snd.stats.countries.label">Countries</span></div>
-            <div class="sonido-stat"><strong>Dolby Atmos</strong><span data-i18n="snd.stats.atmos.label">Certified Dolby mix <span class="fmt">5.1 ~ 7.1.2</span></span></div>
-          </div>
 
           <!-- STUDIO PHOTO GALLERY — mosaic grid -->
           <div class="studio-gallery">
@@ -2979,7 +2988,7 @@
             </div>
             <div class="studio-cell">
               <img src="/images/studio/studio-04-live-room.jpg" alt="Segno Sound — Live Room" loading="lazy">
-              <span class="studio-caption" data-i18n="snd.studio.caption.live">Live room · 7.1 surround system</span>
+              <span class="studio-caption" data-i18n="snd.studio.caption.live">Live room · 7.1.2 surround system</span>
             </div>
             <div class="studio-cell">
               <img src="/images/studio/studio-05-lounge.jpg" alt="Segno Sound — Kitchenette" loading="lazy">
@@ -2987,10 +2996,15 @@
             </div>
             <div class="studio-cell">
               <img src="/images/studio/studio-06-control-alt.jpg" alt="Segno Sound — Control Room Alt" loading="lazy">
-              <span class="studio-caption" data-i18n="snd.studio.caption.altview">Integrated view · Control + Booth</span>
+              <span class="studio-caption" data-i18n="snd.studio.caption.altview">Control room</span>
             </div>
           </div>
 
+          <div class="sonido-stat-row">
+            <div class="sonido-stat"><strong data-i18n="snd.stats.projects.num">400+</strong><span data-i18n="snd.stats.projects.label">Projects delivered</span></div>
+            <div class="sonido-stat"><strong data-i18n="snd.stats.countries.num">20+</strong><span data-i18n="snd.stats.countries.label">Countries</span></div>
+            <div class="sonido-stat"><strong>Dolby Atmos</strong><span data-i18n="snd.stats.atmos.label">Certified Dolby mix <span class="fmt">5.1 ~ 7.1.2</span></span></div>
+          </div>
           <!-- SERVICES BLOCKS -->
           <div class="sonido-service-block" data-kicker="Original Music" data-i18n-kicker="snd.svc.music.kicker">
             <h3 data-i18n="snd.svc.music.title">Music Composition &amp; Supervision</h3>
