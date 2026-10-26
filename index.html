@@ -1579,7 +1579,8 @@
       text-align: center;
     }
 
-    .sonido-contact-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; justify-content: center; }
+    .sonido-contact-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+    @media (max-width: 640px) { .sonido-contact-strip { grid-template-columns: 1fr; } }
     .sonido-contact-item {
       padding: 18px 20px;
       border: 1px solid rgba(220,226,232,0.12);
@@ -3317,10 +3318,6 @@ Web Design</a>
 
       <div class="sonido-view" id="sv-contact" hidden>
         <div class="sonido-text-page">
-          <div class="sonido-view-header">
-            <p class="sonido-kicker" data-i18n="snd.contact.kicker">Get in touch</p>
-            <h2 class="sonido-view-title" data-i18n="snd.contact.title">Contact</h2>
-          </div>
           <div class="sonido-contact-strip">
             <div class="sonido-contact-item">
               <p class="sonido-kicker" style="margin:0 0 10px" data-i18n="snd.contact.email.label">Email</p>
