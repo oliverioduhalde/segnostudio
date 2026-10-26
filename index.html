@@ -77,8 +77,8 @@
     .hero {
       min-height: 100vh;
       display: grid;
-      place-items: center;
-      padding: 110px 22px 96px;
+      place-items: start center;
+      padding: 11vh 22px 96px;
     }
 
     .topbar {
@@ -142,6 +142,7 @@
       width: min(340px, calc(100vw - 44px));
       pointer-events: none;
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       justify-items: center;
       row-gap: 0;
     }
@@ -169,10 +170,10 @@
     body[data-device="tablet"] .hero {
       align-items: start;
     }
-    body[data-device="mobile"][data-orientation="portrait"] .hero { padding-top: 15vh; }
-    body[data-device="mobile"][data-orientation="landscape"] .hero { padding-top: 8vh; }
-    body[data-device="tablet"][data-orientation="portrait"] .hero { padding-top: 12vh; }
-    body[data-device="tablet"][data-orientation="landscape"] .hero { padding-top: 9vh; }
+    body[data-device="mobile"][data-orientation="portrait"] .hero { padding-top: 7.5vh; }
+    body[data-device="mobile"][data-orientation="landscape"] .hero { padding-top: 4vh; }
+    body[data-device="tablet"][data-orientation="portrait"] .hero { padding-top: 6vh; }
+    body[data-device="tablet"][data-orientation="landscape"] .hero { padding-top: 4.5vh; }
 
     .segno-avatar {
       display: none; /* pasivo — activar cuando se necesite */
@@ -211,7 +212,7 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       mix-blend-mode: screen;
-      margin-bottom: 28px;
+      margin-bottom: 14px;
     }
 
     .bl {
@@ -250,18 +251,19 @@
 
     .service-links {
       width: 100%;
+      justify-self: center;
       display: grid;
       grid-template-columns: 1fr;
-      gap: 7px;
+      gap: 14px;
       pointer-events: auto;
     }
 
     .service-links a {
-      min-height: 40px;
+      min-height: 34px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 16px;
+      padding: 6px 16px;
       border: 1px solid rgba(220, 226, 232, 0.18);
       border-radius: 6px;
       background: rgba(10, 11, 13, 0.18);
@@ -1128,13 +1130,13 @@
       /* Mobile: el menú es un monolito rectangular — botones apilados con
          separación mínima, mismo ancho, cada uno con su propio reborde. */
       .service-links {
-        gap: 4px;
+        gap: 12px;
       }
 
       .service-links a {
         position: relative;
-        min-height: 46px;
-        padding: 10px 26px;
+        min-height: 36px;
+        padding: 6px 26px;
         border: 1px solid rgba(220, 226, 232, 0.34);
         border-radius: 5px;
         background: rgba(255, 255, 255, 0.06);
@@ -1579,7 +1581,8 @@
       text-align: center;
     }
 
-    .sonido-contact-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; justify-content: center; }
+    .sonido-contact-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+    @media (max-width: 640px) { .sonido-contact-strip { grid-template-columns: 1fr; } }
     .sonido-contact-item {
       padding: 18px 20px;
       border: 1px solid rgba(220,226,232,0.12);
@@ -1982,30 +1985,31 @@
       flex: 1 1 auto;
       border: 1px solid rgba(220,226,232,0.30);
       border-radius: 5px;
-      padding: 8px 13px;
+      padding: 5px 13px;
       text-align: center;
       background: rgba(255,255,255,0.05);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
       color: rgba(220,226,232,0.72);
     }
     .sonido-nav-link:active { background: rgba(255,255,255,0.14); }
-    .sonido-nav-link.is-active { border-color: var(--hot); }
+    /* botón seleccionado: un poco agrisado para que se lea qué sección se ve */
+    .sonido-nav-link.is-active { border-color: var(--hot); background: rgba(150,156,162,0.30); }
     body[data-bg="light"] .sonido-nav-link {
       border-color: rgba(20,25,30,0.26);
       background: rgba(255,255,255,0.40);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
     }
-    body[data-bg="light"] .sonido-nav-link.is-active { background: rgba(255,255,255,0.9); border-color: var(--hot); }
+    body[data-bg="light"] .sonido-nav-link.is-active { background: rgba(20,25,30,0.13); border-color: var(--hot); box-shadow: none; }
     @media (max-width: 720px) {
       .sonido-nav { padding: 0; gap: 4px; }
       /* Filas completas: 3 por fila, la última fila se estira */
       .sonido-nav-link {
         flex: 1 1 30%;
-        min-height: 34px;
+        min-height: 29px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 6px 6px;
+        padding: 3px 6px;
         font-size: 9.5px;
         letter-spacing: 0.08em;
         white-space: normal;
@@ -2020,14 +2024,14 @@
       }
       .sonido-topbar .sonido-back-btn svg { position: absolute; left: 13px; }
       .sonido-back-btn > span { font-size: clamp(2em, 7.4vw, 4em); }
-      /* sin redundancia: no repetir el nombre del botón apretado */
-      .dup-label { display: none; }
-      .sonido-view-header.dup-empty { display: none; }
       /* cifras un poco más chicas */
       .sonido-stat strong { font-size: 14px; }
       #sv-about .sonido-stat strong { font-size: 13px; }
       #sv-about .sonido-stat { padding: 6px 8px; gap: 5px; }
     }
+    /* sin redundancia: no repetir el nombre del botón apretado (mobile y desktop) */
+    .dup-label { display: none !important; }
+    .sonido-view-header.dup-empty { display: none !important; }
     /* selector de idioma */
     body[data-bg="light"] .lang-btn { color: var(--ink-3); }
     body[data-bg="light"] .lang-btn:hover { color: var(--ink); }
@@ -2106,14 +2110,11 @@
           <span class="bl" data-letter="S">S</span><span class="bl" data-letter="T">T</span><span class="bl" data-letter="D">D</span><span class="bl" data-letter="I">I</span><span class="bl bl-cx" data-letter="O">O</span>
         </div>
         <nav class="service-links" aria-label="Servicios">
-          <a href="#sonido" class="sl-stack" data-i18n="hero.sound">Music
-Audio Post
-Sound Design</a>
+          <a href="#sonido" class="sl-stack" data-i18n="hero.sound">Music | Audio Post | Sound Design</a>
           <a href="#experiencias" data-i18n="hero.experiences">Immersive Experiences</a>
           <a href="#instalaciones" data-i18n="hero.installations">Interactive Installations</a>
           <a href="#workshops" data-i18n="hero.workshops">Workshops</a>
-          <a href="#apps" class="sl-stack" data-i18n="hero.apps">Apps
-Web Design</a>
+          <a href="#apps" class="sl-stack" data-i18n="hero.apps">Apps | Web Design</a>
         </nav>
       </div>
     </section>
@@ -3317,10 +3318,6 @@ Web Design</a>
 
       <div class="sonido-view" id="sv-contact" hidden>
         <div class="sonido-text-page">
-          <div class="sonido-view-header">
-            <p class="sonido-kicker" data-i18n="snd.contact.kicker">Get in touch</p>
-            <h2 class="sonido-view-title" data-i18n="snd.contact.title">Contact</h2>
-          </div>
           <div class="sonido-contact-strip">
             <div class="sonido-contact-item">
               <p class="sonido-kicker" style="margin:0 0 10px" data-i18n="snd.contact.email.label">Email</p>
@@ -3608,7 +3605,7 @@ Web Design</a>
           el.dataset.kicker = tr(el.dataset.i18nKicker);
         });
 
-        // mobile: header labels that just repeat the pressed menu button
+        // header labels that just repeat the pressed menu button
         // (or the title right below) get .dup-label and are hidden by CSS
         const norm = t => (t || '').toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g, '');
         document.querySelectorAll('.sonido-view-header').forEach(h => {
@@ -3617,8 +3614,11 @@ Web Design</a>
           const title = h.querySelector('.sonido-view-title');
           const kicker = h.querySelector('.sonido-kicker');
           const tn = norm(title?.textContent);
-          title?.classList.toggle('dup-label', labels.has(tn));
-          kicker?.classList.toggle('dup-label', labels.has(norm(kicker.textContent)) || norm(kicker.textContent) === tn);
+          // also "Animación / Juegos" under the "Animación" button
+          const repeats = t => !!t && [...labels].some(l => l && t.startsWith(l));
+          const kn = norm(kicker?.textContent);
+          title?.classList.toggle('dup-label', repeats(tn));
+          kicker?.classList.toggle('dup-label', repeats(kn) || kn === tn);
           h.classList.toggle('dup-empty', !!title && title.classList.contains('dup-label') && (!kicker || kicker.classList.contains('dup-label')));
         });
 
@@ -3875,7 +3875,8 @@ Web Design</a>
         _fitCanvas.font = `400 ${newFs}px ${ff}`;
         const charWNew = _fitCanvas.measureText("S").width;
         const sl = document.querySelector(".service-links");
-        if (sl && charWNew > 0) sl.style.width = Math.round(charWNew * 5) + "px";
+        // más anchos que el logo cuando hace falta, para que cada botón entre en una línea
+        if (sl && charWNew > 0) sl.style.width = Math.round(Math.max(charWNew * 5, Math.min(460, innerWidth - 24))) + "px";
       };
       new ResizeObserver(fitBrand).observe(brandShell);
       document.fonts.ready.then(fitBrand);
