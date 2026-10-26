@@ -14,7 +14,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SEGNO STUDIO">
   <meta property="og:title" content="SEGNO STUDIO">
-  <meta property="og:description" content="Immersives, immersive experiences, music and sound design, apps & web, workshops.">
+  <meta property="og:description" content="Interactive installations, immersive experiences, music and sound design, apps & web, workshops.">
   <meta property="og:url" content="https://segnostudio.com/">
   <meta property="og:image" content="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg">
   <meta property="og:locale" content="en_US">
@@ -22,11 +22,12 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SEGNO STUDIO">
-  <meta name="twitter:description" content="Immersives, immersive experiences, music and sound design, apps & web, workshops.">
+  <meta name="twitter:description" content="Interactive installations, immersive experiences, music and sound design, apps & web, workshops.">
   <meta name="twitter:image" content="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg">
   <script src="/vimeo-guard.js?v=3"></script>
   <script src="https://player.vimeo.com/api/player.js"></script>
   <script src="/translations.js?v=9"></script>
+  <script src="/route-meta.js?v=1"></script>
   <style>
     :root {
       color-scheme: dark;
@@ -3601,6 +3602,37 @@
       const I18N_LS_KEY = 'SEGNOSTUDIO_LANG_V2';
       const I18N = window.I18N || { en: {}, es: {} };
 
+      // ── Rutas ─────────────────────────────────────────────────────
+      // Cada sección / subsección tiene URL propia (/sonido/film, /es/sonido/film)
+      // para que los links compartidos muestren su propio preview (middleware.js).
+      // Los links internos siguen siendo #sonido/film: al navegar, la barra de
+      // direcciones pasa a la URL limpia. Los links viejos con #hash siguen andando.
+      const RM = window.SEGNO_ROUTE_META;
+      const isRouteHash = (h) => h === '' || RM.SECTIONS.includes(h.split('/')[0]);
+      function currentRoute() {
+        const h = location.hash.replace(/^#\/?/, '');
+        if (h && isRouteHash(h)) return h;
+        return RM.routeFromPath(location.pathname);
+      }
+      const routeUrl = (route, lang) => RM.routePath(route, lang || currentLang);
+      // #hash de sección -> URL limpia (sin crear otra entrada en el historial)
+      function cleanRouteUrl() {
+        if (!location.hash) return;
+        const h = location.hash.replace(/^#\/?/, '');
+        if (!isRouteHash(h)) return;
+        history.replaceState(null, '', routeUrl(h) + location.search);
+      }
+      function applyRouteMeta() {
+        const m = RM.routeMeta(currentRoute(), currentLang);
+        const set = (sel, attr, val) => document.querySelector(sel)?.setAttribute(attr, val);
+        document.title = m.title;
+        set('meta[name="description"]', 'content', m.desc);
+        set('link[rel="canonical"]', 'href', m.url);
+        set('meta[property="og:url"]', 'content', m.url);
+        set('meta[property="og:image"]', 'content', m.image);
+        set('meta[name="twitter:image"]', 'content', m.image);
+      }
+
       function detectInitialLang() {
         const path = location.pathname.replace(/\/+$/, '');
         if (path === '/es' || path.startsWith('/es/')) return 'es';
@@ -3694,11 +3726,9 @@
         setMeta('meta[name="twitter:description"]', tr('meta.og.desc'));
         setMeta('meta[property="og:locale"]', lang === 'es' ? 'es_AR' : 'en_US');
         setMeta('meta[property="og:locale:alternate"]', lang === 'es' ? 'en_US' : 'es_AR');
-        // canonical + og:url must point to the URL of the language shown,
-        // otherwise Google treats /es as a duplicate of / and drops it.
-        const pageUrl = 'https://segnostudio.com' + (lang === 'es' ? '/es' : '/');
-        document.querySelector('link[rel="canonical"]')?.setAttribute('href', pageUrl);
-        setMeta('meta[property="og:url"]', pageUrl);
+        // canonical + og:url must point to the URL of the language and
+        // section shown, otherwise Google treats /es as a duplicate of /.
+        applyRouteMeta();
 
         // dynamic templated labels (rebuilt on demand)
         const sl = document.getElementById('sceneLabel');
@@ -3717,12 +3747,10 @@
 
       function setLangAndUpdateUrl(lang) {
         applyLang(lang);
-        // keep the user in the same section by preserving the hash
-        const hash = location.hash || '';
-        const search = location.search || '';
-        const want = (lang === 'es') ? '/es' : '/';
-        if (location.pathname !== want) {
-          history.replaceState(null, '', want + search + hash);
+        // keep the user in the same section
+        const want = routeUrl(currentRoute(), lang);
+        if (location.pathname !== want || location.hash) {
+          history.replaceState(null, '', want + location.search);
         }
       }
 
@@ -4935,7 +4963,7 @@
         if (sec) { const v = name.slice(sec.length + 1); return "#" + sec + (v && v !== "home" ? "/" + v : ""); }
         return name === "home" ? "#sonido" : "#sonido/" + name;
       };
-      window.__segnoVideoLink = (card) => location.origin + location.pathname + "?play=" + card.dataset.vimeoId + cardHash(card);
+      window.__segnoVideoLink = (card) => location.origin + routeUrl(cardHash(card).slice(1)) + "?play=" + card.dataset.vimeoId;
       const setPlayParam = (id) => {
         try {
           const u = new URL(location.href);
@@ -4947,8 +4975,8 @@
       if (deepPlayId) {
         const all = [...document.querySelectorAll('.film-card[data-vimeo-id="' + CSS.escape(deepPlayId) + '"]')];
         if (all.length) {
-          const target = all.find(c => cardHash(c) === location.hash) || all[0];
-          if (cardHash(target) && location.hash !== cardHash(target)) location.hash = cardHash(target);
+          const target = all.find(c => cardHash(c) === "#" + currentRoute()) || all[0];
+          if (cardHash(target) && "#" + currentRoute() !== cardHash(target)) location.hash = cardHash(target);
           const tryOpen = (n = 0) => {
             if (target.offsetParent !== null) openVideo(target);
             else if (n < 20) setTimeout(() => tryOpen(n + 1), 300);
@@ -5404,8 +5432,9 @@
 
       let _lastRouteKey = "__init__";
       function routeHash() {
-        const hash = location.hash;
-        const parts = hash.replace("#", "").split("/");
+        cleanRouteUrl();
+        applyRouteMeta();
+        const parts = currentRoute().split("/");
         const rawSection = parts[0] || "";
         const rawView    = parts[1] || "home";
         const routeKey   = rawSection + "/" + rawView;
@@ -5459,10 +5488,10 @@
 
       // Back buttons — all spa sections + sonido
       document.querySelectorAll(".spa-back").forEach(btn =>
-        btn.addEventListener("click", () => { location.hash = ""; window.scrollTo(0, 0); })
+        btn.addEventListener("click", () => { goRoute(""); window.scrollTo(0, 0); })
       );
       document.getElementById("sonidoBack").addEventListener("click", () => {
-        location.hash = "";
+        goRoute("");
         window.scrollTo(0, 0);
       });
 
@@ -5479,10 +5508,16 @@
         if (card) openVideo(card);
       });
 
+      // Navegación sin #hash (volver a la portada); los <a href="#…"> pasan por hashchange
+      function goRoute(route) {
+        history.pushState(null, "", routeUrl(route));
+        routeHash();
+      }
       window.addEventListener("hashchange", routeHash);
+      window.addEventListener("popstate", () => { if (!location.hash) routeHash(); });
       routeHash();
       // Flap hero links on first load (only if landing on hero)
-      if (!location.hash || location.hash === '#') {
+      if (!currentRoute()) {
         setTimeout(flapHeroLinks, 900); // after brand flap settles
       }
 
