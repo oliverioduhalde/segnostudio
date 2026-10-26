@@ -28,8 +28,8 @@ window.I18N = {
     // ── Hero service links ────────────────────────────────────
     "hero.experiences": "Immersive Experiences",
     "hero.installations": "Interactive Installations",
-    "hero.sound": "Music\nAudio Post\nSound Design",
-    "hero.apps": "Apps\nWeb Design",
+    "hero.sound": "Music | Audio Post | Sound Design",
+    "hero.apps": "Apps | Web Design",
     "hero.workshops": "Workshops",
 
     // ── Back-button label (proper noun, same both langs) ──────
@@ -346,8 +346,8 @@ window.I18N = {
     // ── Hero service links ────────────────────────────────────
     "hero.experiences": "Experiencias Inmersivas",
     "hero.installations": "Instalaciones Interactivas",
-    "hero.sound": "Música\nAudio Post\nSound Design",
-    "hero.apps": "Apps\nDiseño Web",
+    "hero.sound": "Música | Audio Post | Sound Design",
+    "hero.apps": "Apps | Diseño Web",
     "hero.workshops": "Talleres",
 
     "back.brand": "Segno Studio",

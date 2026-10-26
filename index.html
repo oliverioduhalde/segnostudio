@@ -77,8 +77,8 @@
     .hero {
       min-height: 100vh;
       display: grid;
-      place-items: center;
-      padding: 110px 22px 96px;
+      place-items: start center;
+      padding: 11vh 22px 96px;
     }
 
     .topbar {
@@ -142,6 +142,7 @@
       width: min(340px, calc(100vw - 44px));
       pointer-events: none;
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       justify-items: center;
       row-gap: 0;
     }
@@ -169,10 +170,10 @@
     body[data-device="tablet"] .hero {
       align-items: start;
     }
-    body[data-device="mobile"][data-orientation="portrait"] .hero { padding-top: 15vh; }
-    body[data-device="mobile"][data-orientation="landscape"] .hero { padding-top: 8vh; }
-    body[data-device="tablet"][data-orientation="portrait"] .hero { padding-top: 12vh; }
-    body[data-device="tablet"][data-orientation="landscape"] .hero { padding-top: 9vh; }
+    body[data-device="mobile"][data-orientation="portrait"] .hero { padding-top: 7.5vh; }
+    body[data-device="mobile"][data-orientation="landscape"] .hero { padding-top: 4vh; }
+    body[data-device="tablet"][data-orientation="portrait"] .hero { padding-top: 6vh; }
+    body[data-device="tablet"][data-orientation="landscape"] .hero { padding-top: 4.5vh; }
 
     .segno-avatar {
       display: none; /* pasivo — activar cuando se necesite */
@@ -211,7 +212,7 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       mix-blend-mode: screen;
-      margin-bottom: 28px;
+      margin-bottom: 14px;
     }
 
     .bl {
@@ -250,6 +251,7 @@
 
     .service-links {
       width: 100%;
+      justify-self: center;
       display: grid;
       grid-template-columns: 1fr;
       gap: 7px;
@@ -257,11 +259,11 @@
     }
 
     .service-links a {
-      min-height: 40px;
+      min-height: 34px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 16px;
+      padding: 6px 16px;
       border: 1px solid rgba(220, 226, 232, 0.18);
       border-radius: 6px;
       background: rgba(10, 11, 13, 0.18);
@@ -1133,8 +1135,8 @@
 
       .service-links a {
         position: relative;
-        min-height: 46px;
-        padding: 10px 26px;
+        min-height: 36px;
+        padding: 6px 26px;
         border: 1px solid rgba(220, 226, 232, 0.34);
         border-radius: 5px;
         background: rgba(255, 255, 255, 0.06);
@@ -2108,14 +2110,11 @@
           <span class="bl" data-letter="S">S</span><span class="bl" data-letter="T">T</span><span class="bl" data-letter="D">D</span><span class="bl" data-letter="I">I</span><span class="bl bl-cx" data-letter="O">O</span>
         </div>
         <nav class="service-links" aria-label="Servicios">
-          <a href="#sonido" class="sl-stack" data-i18n="hero.sound">Music
-Audio Post
-Sound Design</a>
+          <a href="#sonido" class="sl-stack" data-i18n="hero.sound">Music | Audio Post | Sound Design</a>
           <a href="#experiencias" data-i18n="hero.experiences">Immersive Experiences</a>
           <a href="#instalaciones" data-i18n="hero.installations">Interactive Installations</a>
           <a href="#workshops" data-i18n="hero.workshops">Workshops</a>
-          <a href="#apps" class="sl-stack" data-i18n="hero.apps">Apps
-Web Design</a>
+          <a href="#apps" class="sl-stack" data-i18n="hero.apps">Apps | Web Design</a>
         </nav>
       </div>
     </section>
@@ -3876,7 +3875,8 @@ Web Design</a>
         _fitCanvas.font = `400 ${newFs}px ${ff}`;
         const charWNew = _fitCanvas.measureText("S").width;
         const sl = document.querySelector(".service-links");
-        if (sl && charWNew > 0) sl.style.width = Math.round(charWNew * 5) + "px";
+        // más anchos que el logo cuando hace falta, para que cada botón entre en una línea
+        if (sl && charWNew > 0) sl.style.width = Math.round(Math.max(charWNew * 5, Math.min(460, innerWidth - 24))) + "px";
       };
       new ResizeObserver(fitBrand).observe(brandShell);
       document.fonts.ready.then(fitBrand);
