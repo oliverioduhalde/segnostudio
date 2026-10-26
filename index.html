@@ -1522,6 +1522,13 @@
     body[data-bg="light"] #sv-services .sonido-stat + .sonido-stat { border-left-color: var(--line); }
     /* leyendas de las fotos del estudio 30% más chicas */
     #sv-services .studio-caption { font-size: 6.3px; }
+    /* Textos corridos justificados en todas las páginas (con guiones para no abrir huecos) */
+    .project-card p,
+    .ws-card p,
+    .ws-desc,
+    .ws-quote,
+    .sonido-service-block p,
+    .portfolio-intro p { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
     /* Nosotros y Estudio sin bajada; bloques de Nosotros más compactos */
     #sv-about .sonido-kicker,
     #sv-services .sonido-kicker { display: none; }
@@ -2046,6 +2053,21 @@
     /* sin redundancia: no repetir el nombre del botón apretado (mobile y desktop) */
     .dup-label { display: none !important; }
     .sonido-view-header.dup-empty { display: none !important; }
+    /* selector de idioma dentro de cada sección */
+    .sonido-topbar { position: relative; }
+    .lang-toggle--section { margin-left: 10px; flex-shrink: 0; }
+    .lang-toggle--section .lang-btn { font-size: 9px; padding: 1px 4px; }
+    @media (max-width: 720px) {
+      /* en mobile el topbar se arma en filas: va arriba a la derecha */
+      .lang-toggle--section {
+        position: absolute;
+        top: 1px;
+        right: 6px;
+        z-index: 2;
+        margin-left: 0;
+      }
+      .lang-toggle--section .lang-btn { font-size: 8.5px; }
+    }
     /* selector de idioma */
     body[data-bg="light"] .lang-btn { color: var(--ink-3); }
     body[data-bg="light"] .lang-btn:hover { color: var(--ink); }
@@ -3683,6 +3705,19 @@
       }
 
       // selector wiring
+      // el selector de idioma también dentro de cada sección (el topbar
+      // global queda tapado por la sección, sobre todo en mobile)
+      (() => {
+        const src = document.querySelector('.topbar .lang-toggle');
+        if (!src) return;
+        document.querySelectorAll('.sonido-topbar').forEach(tb => {
+          if (tb.querySelector('.lang-toggle')) return;
+          const clone = src.cloneNode(true);
+          clone.classList.add('lang-toggle--section');
+          tb.appendChild(clone);
+        });
+      })();
+
       document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => setLangAndUpdateUrl(btn.dataset.lang));
       });
