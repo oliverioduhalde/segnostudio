@@ -1975,30 +1975,31 @@
       flex: 1 1 auto;
       border: 1px solid rgba(220,226,232,0.30);
       border-radius: 5px;
-      padding: 8px 13px;
+      padding: 5px 13px;
       text-align: center;
       background: rgba(255,255,255,0.05);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
       color: rgba(220,226,232,0.72);
     }
     .sonido-nav-link:active { background: rgba(255,255,255,0.14); }
-    .sonido-nav-link.is-active { border-color: var(--hot); }
+    /* botón seleccionado: un poco agrisado para que se lea qué sección se ve */
+    .sonido-nav-link.is-active { border-color: var(--hot); background: rgba(150,156,162,0.30); }
     body[data-bg="light"] .sonido-nav-link {
       border-color: rgba(20,25,30,0.26);
       background: rgba(255,255,255,0.40);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
     }
-    body[data-bg="light"] .sonido-nav-link.is-active { background: rgba(255,255,255,0.9); border-color: var(--hot); }
+    body[data-bg="light"] .sonido-nav-link.is-active { background: rgba(20,25,30,0.13); border-color: var(--hot); box-shadow: none; }
     @media (max-width: 720px) {
       .sonido-nav { padding: 0; gap: 4px; }
       /* Filas completas: 3 por fila, la última fila se estira */
       .sonido-nav-link {
         flex: 1 1 30%;
-        min-height: 34px;
+        min-height: 29px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 6px 6px;
+        padding: 3px 6px;
         font-size: 9.5px;
         letter-spacing: 0.08em;
         white-space: normal;
@@ -2013,14 +2014,14 @@
       }
       .sonido-topbar .sonido-back-btn svg { position: absolute; left: 13px; }
       .sonido-back-btn > span { font-size: clamp(2em, 7.4vw, 4em); }
-      /* sin redundancia: no repetir el nombre del botón apretado */
-      .dup-label { display: none; }
-      .sonido-view-header.dup-empty { display: none; }
       /* cifras un poco más chicas */
       .sonido-stat strong { font-size: 14px; }
       #sv-about .sonido-stat strong { font-size: 13px; }
       #sv-about .sonido-stat { padding: 6px 8px; gap: 5px; }
     }
+    /* sin redundancia: no repetir el nombre del botón apretado (mobile y desktop) */
+    .dup-label { display: none !important; }
+    .sonido-view-header.dup-empty { display: none !important; }
     /* selector de idioma */
     body[data-bg="light"] .lang-btn { color: var(--ink-3); }
     body[data-bg="light"] .lang-btn:hover { color: var(--ink); }
@@ -3601,7 +3602,7 @@ Web Design</a>
           el.dataset.kicker = tr(el.dataset.i18nKicker);
         });
 
-        // mobile: header labels that just repeat the pressed menu button
+        // header labels that just repeat the pressed menu button
         // (or the title right below) get .dup-label and are hidden by CSS
         const norm = t => (t || '').toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g, '');
         document.querySelectorAll('.sonido-view-header').forEach(h => {
@@ -3610,8 +3611,11 @@ Web Design</a>
           const title = h.querySelector('.sonido-view-title');
           const kicker = h.querySelector('.sonido-kicker');
           const tn = norm(title?.textContent);
-          title?.classList.toggle('dup-label', labels.has(tn));
-          kicker?.classList.toggle('dup-label', labels.has(norm(kicker.textContent)) || norm(kicker.textContent) === tn);
+          // also "Animación / Juegos" under the "Animación" button
+          const repeats = t => !!t && [...labels].some(l => l && t.startsWith(l));
+          const kn = norm(kicker?.textContent);
+          title?.classList.toggle('dup-label', repeats(tn));
+          kicker?.classList.toggle('dup-label', repeats(kn) || kn === tn);
           h.classList.toggle('dup-empty', !!title && title.classList.contains('dup-label') && (!kicker || kicker.classList.contains('dup-label')));
         });
 
