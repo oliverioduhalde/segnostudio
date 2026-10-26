@@ -2070,14 +2070,16 @@
     .lang-toggle--section .lang-btn { font-size: 9px; padding: 1px 4px; }
     @media (max-width: 720px) {
       /* en mobile el topbar se arma en filas: va arriba a la derecha */
+      @media (max-width: 360px) { .sonido-nav-link { letter-spacing: 0.04em; padding: 3px 4px; } }
+      /* fila propia arriba, alineada a la derecha, fuera del botón SEGNO STUDIO */
       .lang-toggle--section {
-        position: absolute;
-        top: 1px;
-        right: 6px;
-        z-index: 2;
-        margin-left: 0;
+        order: -1;
+        width: 100%;
+        justify-content: flex-end;
+        height: 14px;
+        margin: -5px 0 0;
       }
-      .lang-toggle--section .lang-btn { font-size: 8.5px; }
+      .lang-toggle--section .lang-btn { font-size: 8.5px; line-height: 1; padding: 0 4px; min-height: 0; }
     }
     /* selector de idioma */
     body[data-bg="light"] .lang-btn { color: var(--ink-3); }
@@ -2936,7 +2938,7 @@
       <nav class="sonido-nav" aria-label="Segno Sound">
         <a href="#sonido"            class="sonido-nav-link" data-view="home" data-i18n="exp.nav.home">Portfolio</a>
         <a href="#sonido/services"   class="sonido-nav-link" data-view="services" data-i18n="snd.nav.services">Studio</a>
-        <a href="#sonido/film"       class="sonido-nav-link" data-view="film" data-i18n="snd.nav.film">Film / Series</a>
+        <a href="#sonido/film"       class="sonido-nav-link" data-view="film" data-i18n="snd.nav.film">Film&nbsp;|&nbsp;Series</a>
         <a href="#sonido/animation"  class="sonido-nav-link" data-view="animation" data-i18n="snd.nav.animation">Animation</a>
         <a href="#sonido/sonic"      class="sonido-nav-link" data-view="sonic" data-i18n="snd.nav.sonic">Sonic Brand</a>
         <a href="#sonido/openings"   class="sonido-nav-link" data-view="openings" data-i18n="snd.nav.openings">Openings</a>
@@ -2959,7 +2961,7 @@
       <div class="sonido-view" id="sv-film" hidden>
         <div class="sonido-view-header">
           <p class="sonido-kicker" data-i18n="snd.kicker.film">Film &amp; Series</p>
-          <h2 class="sonido-view-title" data-i18n="snd.title.film">Film / Series</h2>
+          <h2 class="sonido-view-title" data-i18n="snd.title.film">Film | Series</h2>
         </div>
         <div class="sonido-grid"></div>
       </div>
@@ -2967,7 +2969,7 @@
       <div class="sonido-view" id="sv-animation" hidden>
         <div class="sonido-view-header">
           <p class="sonido-kicker" data-i18n="snd.kicker.animation">Animation &amp; Gaming</p>
-          <h2 class="sonido-view-title" data-i18n="snd.title.animation">Animation / Gaming</h2>
+          <h2 class="sonido-view-title" data-i18n="snd.title.animation">Animation | Gaming</h2>
         </div>
         <div class="sonido-grid"></div>
       </div>
@@ -3661,7 +3663,7 @@
           const title = h.querySelector('.sonido-view-title');
           const kicker = h.querySelector('.sonido-kicker');
           const tn = norm(title?.textContent);
-          // also "Animación / Juegos" under the "Animación" button
+          // also "Animación | Juegos" under the "Animación" button
           const repeats = t => !!t && [...labels].some(l => l && t.startsWith(l));
           const kn = norm(kicker?.textContent);
           title?.classList.toggle('dup-label', repeats(tn));
