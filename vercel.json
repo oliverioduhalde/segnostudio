@@ -2,25 +2,49 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.segnostudio.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.segnostudio.com"
+        }
+      ],
       "destination": "https://segnostudio.com/:path*",
       "permanent": true
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "segnomediagroup.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "segnomediagroup.com"
+        }
+      ],
       "destination": "https://segnostudio.com/:path*",
       "permanent": true
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.segnomediagroup.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.segnomediagroup.com"
+        }
+      ],
       "destination": "https://segnostudio.com/:path*",
       "permanent": true
     }
   ],
   "rewrites": [
-    { "source": "/es",       "destination": "/index.html" },
-    { "source": "/es/(.*)",  "destination": "/index.html" }
-  ]
+    {
+      "source": "/es",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/es/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "github": {
+    "silent": true
+  }
 }

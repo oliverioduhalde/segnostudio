@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 90" width="200" height="90">
+  <title>ViX</title>
+  <g fill="#000">
+    <path d="M4 8h24l20 52 20-52h24L59 84H37z"/>
+    <rect x="98" y="34" width="21" height="50" rx="3"/>
+    <circle cx="108.5" cy="17" r="11"/>
+    <path d="M126 8h25l14 22 14-22h17l-23 36 25 40h-25l-15-24-15 24h-17l24-38z"/>
+  </g>
+</svg>
