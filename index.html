@@ -777,6 +777,9 @@
 
     /* Credits line — full row under client · type · category */
     .video-lightbox__info { flex-wrap: wrap; }
+    /* el ancho del visor lo marca el video, no el texto de abajo: así la película queda siempre centrada */
+    .video-lightbox__info { width: 0; min-width: 100%; box-sizing: border-box; }
+    .video-lightbox__frame { align-self: center; }
     .info-credits {
       flex-basis: 100%;
       text-align: center;
