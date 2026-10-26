@@ -1520,6 +1520,17 @@
     #sv-services .sonido-stat + .sonido-stat { border-left: 1px solid rgba(220,226,232,0.1); }
     body[data-bg="light"] #sv-services .sonido-stat-row { border-color: var(--line); background: var(--surface); }
     body[data-bg="light"] #sv-services .sonido-stat + .sonido-stat { border-left-color: var(--line); }
+    #sv-services .sonido-stat span { white-space: normal; overflow-wrap: anywhere; }
+    /* mobile: mismo bloque, en 2 filas (Dolby abajo a todo el ancho) para que nada se salga */
+    @media (max-width: 720px) {
+      #sv-services .sonido-stat-row { display: grid; grid-template-columns: 1fr 1fr; }
+      #sv-services .sonido-stat { padding: 6px 10px; }
+      #sv-services .sonido-stat span { letter-spacing: 0.1em; }
+      #sv-services .sonido-stat:nth-child(3) {
+        grid-column: 1 / -1; border-left: 0; border-top: 1px solid rgba(220,226,232,0.1);
+      }
+      body[data-bg="light"] #sv-services .sonido-stat:nth-child(3) { border-top-color: var(--line); }
+    }
     /* leyendas de las fotos del estudio 30% más chicas */
     #sv-services .studio-caption { font-size: 6.3px; }
     /* Textos corridos justificados en todas las páginas (con guiones para no abrir huecos) */
