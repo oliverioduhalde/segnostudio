@@ -25,7 +25,7 @@
   <meta name="twitter:description" content="Interactive installations, immersive experiences, music and sound design, apps & web, workshops.">
   <meta name="twitter:image" content="https://static.wixstatic.com/media/fdedb3_ee6b0b4c4ccf47b1b5b8101dd6b8943e~mv2.jpg">
   <script src="/vimeo-guard.js?v=3"></script>
-  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script src="https://player.vimeo.com/api/player.js" async></script>
   <script src="/translations.js?v=9"></script>
   <script src="/route-meta.js?v=1"></script>
   <style>
@@ -3400,7 +3400,11 @@
   <script>
     (() => {
       const canvas = document.getElementById("stage");
-      const gl = canvas.getContext("webgl", { antialias: false, premultipliedAlpha: false });
+      // El fondo animado (WebGL) es decorativo: si el celular no lo soporta o falla,
+      // el sitio sigue andando igual, sin fondo animado.
+      let gl = null;
+      try { gl = canvas.getContext("webgl", { antialias: false, premultipliedAlpha: false, powerPreference: "low-power" }); } catch (e) {}
+      const IS_TOUCH = navigator.maxTouchPoints > 0 || matchMedia("(pointer: coarse)").matches;
       const controls = document.getElementById("controls");
       const brand = document.getElementById("brand");
       const brandShell = document.getElementById("brandShell");
@@ -3415,10 +3419,6 @@
       const storeKey = "SEGNOMEDIAGROUP_SCENES_V1";
       const MAX_CLICKS = 32;
 
-      if (!gl) {
-        document.body.innerHTML = "<main style='padding:24px;font-family:system-ui;background:#080a0d;color:white;min-height:100vh'>WebGL no esta disponible en este navegador.</main>";
-        return;
-      }
 
       const defaults = {
         density: 2.4,
@@ -3555,9 +3555,15 @@
         return shader;
       };
 
+      let uniforms = {};
+      try {
+      if (!gl) throw new Error("WebGL no disponible");
+      // celulares con GPU sin highp en fragment shaders: bajar a mediump
+      const hp = gl.getShaderPrecisionFormat && gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
+      const fragSrc = (hp && hp.precision > 0) ? fragmentSource : fragmentSource.replace("precision highp float;", "precision mediump float;");
       const program = gl.createProgram();
       gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSource));
-      gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSource));
+      gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragSrc));
       gl.linkProgram(program);
       if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
         throw new Error(gl.getProgramInfoLog(program) || "Program link failed");
@@ -3571,7 +3577,7 @@
       gl.enableVertexAttribArray(pos);
       gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
 
-      const uniforms = {
+      uniforms = {
         res: gl.getUniformLocation(program, "u_res"),
         time: gl.getUniformLocation(program, "u_time"),
         clicks: gl.getUniformLocation(program, "u_clicks[0]"),
@@ -3586,6 +3592,11 @@
         fg: gl.getUniformLocation(program, "u_fg"),
         accent: gl.getUniformLocation(program, "u_accent"),
       };
+      } catch (e) {
+        console.warn("Fondo animado desactivado:", e && e.message);
+        gl = null;
+      }
+      if (gl) canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); gl = null; });
 
       let state = { ...defaults };
       let clicks = [];
@@ -4372,13 +4383,14 @@
       };
 
       const resize = () => {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        // en celulares el fondo (al 20% de opacidad) se dibuja a 1x: mucho menos trabajo para la GPU
+        const dpr = Math.min(window.devicePixelRatio || 1, IS_TOUCH ? 1 : 2);
         const w = Math.max(2, Math.floor(window.innerWidth * dpr));
         const h = Math.max(2, Math.floor(window.innerHeight * dpr));
         if (canvas.width !== w || canvas.height !== h) {
           canvas.width = w;
           canvas.height = h;
-          gl.viewport(0, 0, w, h);
+          if (gl) gl.viewport(0, 0, w, h);
         }
       };
 
@@ -5041,6 +5053,8 @@
           packedB[index * 4] = click.freqMul;
         });
 
+        voiceLabel.textContent = `${clicks.length} ${tr("topbar.voices")}`;
+        if (!gl) return; // sin fondo animado: no hay nada que dibujar
         const pal = paletteForState();
         gl.uniform2f(uniforms.res, canvas.width, canvas.height);
         gl.uniform1f(uniforms.time, t);
